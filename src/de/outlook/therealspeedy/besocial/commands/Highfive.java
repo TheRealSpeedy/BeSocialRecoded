@@ -36,6 +36,7 @@ public class Highfive implements CommandExecutor{
 				}
 				else if (Players.samePlayer(sender, target)) {
 					sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.selfSocial.highfive"));
+					Players.spawnParticles((Player) sender, target, cmd.getName());
 				}
 				else {
 					if (Players.notMember(target)) {
@@ -44,6 +45,7 @@ public class Highfive implements CommandExecutor{
 					else {
 						sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success.highfive", (Player) sender, target));
 						target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success.highfive", (Player) sender, target));
+						Players.spawnParticles((Player) sender, target, cmd.getName());
 					}
 				}
 			}

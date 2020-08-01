@@ -9,8 +9,12 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Cooldown extends JavaPlugin {
-    static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
-    static Long cooldownInConfig = plugin.getConfig().getLong("commands.CooldownSeconds");
+    private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
+    private static Long cooldownInConfig = plugin.getConfig().getLong("commands.CooldownSeconds");
+    private static boolean privateCooldown = plugin.getConfig().getBoolean("commands.everyCommandHasOwnCooldown");
+    private static int rejoinCooldownTime = plugin.getConfig().getInt("commands.RejoinCooldownSeconds");
+
+    private static HashMap<UUID, Long> cooldownGlobal = new HashMap<UUID, Long>();
 
     private static HashMap<UUID, Long> cooldownCuddle = new HashMap<UUID, Long>();
     private static HashMap<UUID, Long> cooldownHandshake = new HashMap<UUID, Long>();
@@ -22,7 +26,15 @@ public class Cooldown extends JavaPlugin {
     private static HashMap<UUID, Long> cooldownSlap = new HashMap<UUID, Long>();
     private static HashMap<UUID, Long> cooldownStroke = new HashMap<UUID, Long>();
 
+
+
+
+
     private static HashMap<UUID, Long> getCooldownHashMap(String command){
+
+        if (!privateCooldown)
+            return cooldownGlobal;
+
         switch (command){
             case "cuddle":
                 return cooldownCuddle;
@@ -86,9 +98,21 @@ public class Cooldown extends JavaPlugin {
         if (cooldown.containsKey(playeruuid)) {
             remainingTime = (cooldown.get(playeruuid) + cooldownInConfig - System.currentTimeMillis())/1000;
         } else {
-            remainingTime = Long.valueOf(0);
+            remainingTime = 0L;
         }
         return remainingTime;
+    }
+
+    public static int rejoinCooldownSecondsLeft(Player p){
+        Long timeLeftAt = Database.getPlayerLeftTime(p);
+        Long timeNow = System.currentTimeMillis();
+        int cooldownTime = rejoinCooldownTime;
+
+        Long timePassedLong = (timeNow - timeLeftAt)/1000;
+        int timePassedInt = Math.toIntExact(timePassedLong);
+
+        if (timePassedInt > cooldownTime) return 0;
+        else return cooldownTime-timePassedInt;
     }
 
 }

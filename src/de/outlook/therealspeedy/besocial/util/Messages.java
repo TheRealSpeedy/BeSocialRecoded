@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Messages extends JavaPlugin {
-	static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
+	private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
 	
 	public static String getPrefix() {
 		
@@ -17,6 +17,10 @@ public class Messages extends JavaPlugin {
 		prefix = prefix + " ";
 		
 		return prefix;
+	}
+
+	public static String getPluginVersion() {
+		return plugin.getDescription().getVersion();
 	}
 	
 	public static String getInfoMessage(String path) {
@@ -55,6 +59,36 @@ public class Messages extends JavaPlugin {
 
 		message = message.replaceAll("%time", cooldownTime);
 
+		message = getPrefix() + message;
+
+		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static String getRejoinCooldownErrorMessage(Player p){
+		int cooldownSecondsLeft = Cooldown.rejoinCooldownSecondsLeft(p);
+		int days = 0;
+		int hours = 0;
+		int minutes = 0;
+		int seconds = 0;
+		String message = plugin.getConfig().getString("messages.sender.error.rejoinCooldown");
+
+		while (cooldownSecondsLeft >= 86400) {
+			days++;
+			cooldownSecondsLeft = cooldownSecondsLeft - 86400;
+		}
+		while (cooldownSecondsLeft >= 3600){
+			hours++;
+			cooldownSecondsLeft = cooldownSecondsLeft - 3600;
+		}
+		while (cooldownSecondsLeft >= 60){
+			minutes++;
+			cooldownSecondsLeft = cooldownSecondsLeft - 60;
+		}
+		seconds = cooldownSecondsLeft;
+
+		String timeString = ""+days+"d "+hours+"h "+minutes+"min "+seconds+"s";
+
+		message = message.replaceAll("%time", timeString);
 		message = getPrefix() + message;
 
 		return ChatColor.translateAlternateColorCodes('&', message);

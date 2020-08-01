@@ -36,6 +36,7 @@ public class Handshake implements CommandExecutor {
 				}
 				else if (Players.samePlayer(sender, target)) {
 					sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.selfSocial.handshake"));
+					Players.spawnParticles((Player) sender, target, cmd.getName());
 				}
 				else {
 					if (Players.notMember(target)) {
@@ -44,6 +45,7 @@ public class Handshake implements CommandExecutor {
 					else {
 						sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success.handshake", (Player) sender, target));
 						target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success.handshake", (Player) sender, target));
+						Players.spawnParticles((Player) sender, target, cmd.getName());
 					}
 				}
 			}

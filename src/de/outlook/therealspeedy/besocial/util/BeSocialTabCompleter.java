@@ -6,8 +6,13 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class BeSocialTabCompleter implements TabCompleter {
+
+	private static FileConfiguration config = getServer().getPluginManager().getPlugin("BeSocial").getConfig();
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -18,8 +23,13 @@ public class BeSocialTabCompleter implements TabCompleter {
 			if (args.length == 1) {
 				if (args[0].startsWith("")) {
 					tabComplete.add("help");
+					tabComplete.add("info");
 					if (sender.hasPermission("besocial.admin")) {
 						tabComplete.add("admin");
+						tabComplete.add("a");
+					}
+					if (config.getBoolean("enableCommand.besocialRejoin") && sender.hasPermission("besocial.rejoin")) {
+						tabComplete.add("rejoin");
 					}
 					return tabComplete;
 				}

@@ -35,6 +35,7 @@ public class Lick implements CommandExecutor {
 				}
 				else if (Players.samePlayer(sender, target)) {
 					sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.selfSocial.lick"));
+					Players.spawnParticles((Player) sender, target, cmd.getName());
 				}
 				else {
 					if (Players.notMember(target)) {
@@ -43,6 +44,7 @@ public class Lick implements CommandExecutor {
 					else {
 						sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success.lick", (Player) sender, target));
 						target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success.lick", (Player) sender, target));
+						Players.spawnParticles((Player) sender, target, cmd.getName());
 					}
 				}
 			}

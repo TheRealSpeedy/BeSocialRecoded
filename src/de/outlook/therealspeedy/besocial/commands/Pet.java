@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import de.outlook.therealspeedy.besocial.util.Messages;
 import de.outlook.therealspeedy.besocial.util.Players;
 
-public class Stroke implements CommandExecutor {
+public class Pet implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -24,7 +24,7 @@ public class Stroke implements CommandExecutor {
 			}
 			else {
 
-				if (Cooldown.cooldownActive((Player) sender, "stroke")){
+				if (Cooldown.cooldownActive((Player) sender, "pet")){
 					sender.sendMessage(Messages.getCooldownErrorMessage());
 					return false;
 				}
@@ -35,6 +35,7 @@ public class Stroke implements CommandExecutor {
 				}
 				else if (Players.samePlayer(sender, target)) {
 					sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.selfSocial.pet"));
+					Players.spawnParticles((Player) sender, target, cmd.getName());
 				}
 				else {
 					if (Players.notMember(target)) {
@@ -43,6 +44,7 @@ public class Stroke implements CommandExecutor {
 					else {
 						sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success.pet", (Player) sender, target));
 						target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success.pet", (Player) sender, target));
+						Players.spawnParticles((Player) sender, target, cmd.getName());
 					}
 				}
 			}
