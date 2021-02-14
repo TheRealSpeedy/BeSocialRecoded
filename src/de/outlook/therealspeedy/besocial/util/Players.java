@@ -13,6 +13,9 @@ import de.outlook.therealspeedy.besocial.BeSocial;
 
 import java.util.logging.Level;
 
+import static de.outlook.therealspeedy.besocial.util.Basic.stringArrayContainsString;
+import static de.outlook.therealspeedy.besocial.util.Database.getIgnored;
+
 public class Players {
 	static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
 	static FileConfiguration config = plugin.getConfig();
@@ -36,6 +39,10 @@ public class Players {
 
 		return !BeSocial.notMembers.contains(playerID);
 	}
+
+	public static boolean targetIsIgnoringSender(Player sender, Player target) {
+		return stringArrayContainsString(getIgnored(target), sender.getUniqueId().toString());
+	}
 	
 	public static int commandCooldown() {
         return plugin.getConfig().getInt("commands.CooldownSeconds");
@@ -58,7 +65,7 @@ public class Players {
 		double areaY = 0.4 * areaModifier;
 		double areaZ = 0.3 * areaModifier;
 
-		if (samePlayer((CommandSender) sender, target)){
+		if (samePlayer(sender, target)){
 			if (config.getBoolean("particles.onlyShowParticlesToParticipants")){
 				sender.spawnParticle(particleForCommand(command), playerHeartLocation(sender), particleAmount, areaX, areaY, areaZ);
 			} else {
@@ -88,7 +95,6 @@ public class Players {
 	private static Particle stringToParticle(String string){
 		switch (string){
 			case "heart":
-				return Particle.HEART;
 			case "hearts":
 				return Particle.HEART;
 			case "composter":

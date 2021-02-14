@@ -41,6 +41,12 @@ public class Pet implements CommandExecutor {
 					if (Players.notMember(target)) {
 						sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.targetNotMember"));
 					}
+					else if (Players.targetIsIgnoringSender((Player) sender, target)) {
+						sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.targetIgnoringSender"));
+					}
+					else if (Players.targetIsIgnoringSender(target, (Player) sender)) {
+						sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.senderIgnoringTarget"));
+					}
 					else {
 						sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success.pet", (Player) sender, target));
 						target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success.pet", (Player) sender, target));

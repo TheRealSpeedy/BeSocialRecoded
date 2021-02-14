@@ -1,13 +1,13 @@
 package de.outlook.therealspeedy.besocial.util;
 
 import de.outlook.therealspeedy.besocial.BeSocial;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 
+import static de.outlook.therealspeedy.besocial.util.Basic.*;
 import static org.bukkit.Bukkit.getServer;
 
 public class Database {
@@ -31,21 +31,69 @@ public class Database {
         return database.getLong(loadPath);
     }
 
+    public static boolean addIgnored(Player player, Player playerToIgnore){
+        String playerID = player.getUniqueId().toString();
+        String ignoreID = playerToIgnore.getUniqueId().toString();
+        String path = playerID + ".ignoring";
+        if (database.contains(path)) {
+            String[] oldArray = database.getString(path).split("&");
+            if (stringArrayContainsString(oldArray, ignoreID)) {
+                return false;
+            } else {
+                String newDatabaseString = makeDatabaseString(oldArray);
+                newDatabaseString = addToDatabaseString(newDatabaseString, ignoreID);
+                database.set(path, newDatabaseString);
+                return true;
+            }
+
+        } else {
+            String[] newArray = {ignoreID};
+            String newDatabaseString = makeDatabaseString(newArray);
+            database.set(path, newDatabaseString);
+            return true;
+        }
+
+    }
+
+    public static boolean removeIgnored(Player player, Player playerToRemove) {
+        String playerID = player.getUniqueId().toString();
+        String removeID = playerToRemove.getUniqueId().toString();
+        String path = playerID + ".ignoring";
+        String[] oldArray = getIgnored(player);
+        if (stringArrayContainsString(oldArray, removeID)) {
+            String [] newArray = removeFromArray(oldArray, removeID);
+            String newDataBaseArray = makeDatabaseString(newArray);
+            database.set(path, newDataBaseArray);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static String[] getIgnored(Player player) {
+        String playerID = player.getUniqueId().toString();
+        String path = playerID + ".ignoring";
+        if (database.contains(path)) {
+            return database.getString(path).split("&");
+        } else {
+            return new String[0];
+        }
+    }
+
     public static void logAction(Player player, String action){
         String playerID = player.getUniqueId().toString();
         String key = null;
         try {
             key = getKey(action);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             plugin.getLogger().log(Level.SEVERE, "DATABASE ERROR. INFORM THE PLUGIN AUTHOR(S) ABOUT THIS!");
             plugin.getLogger().log(Level.SEVERE, "ERROR INFO logAction,getKey for:" + action);
         }
 
         String path = playerID + "." + key;
         if (database.contains(path)){
-            int oldInt = database.getInt(path);
-            int newInt = oldInt++;
+            int newInt = database.getInt(path) + 1;
             database.set(path, newInt);
         } else {
             database.set(path, 1);
@@ -59,9 +107,9 @@ public class Database {
         try {
             key = getKey(source);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             plugin.getLogger().log(Level.SEVERE, "DATABASE ERROR. INFORM THE PLUGIN AUTHOR(S) ABOUT THIS!");
-            plugin.getLogger().log(Level.SEVERE, "ERROR INFO logAction,getKey for:" + source);
+            plugin.getLogger().log(Level.SEVERE, "ERROR INFO getStatistics,getKey for:" + source);
         }
 
         String path = playerID + "." + key;
@@ -111,6 +159,10 @@ public class Database {
                 return "ssl";
             case "receiveSlap":
                 return "rsl";
+            case "sendHealth":
+                return "she";
+            case "receiveHealth":
+                return "rhe";
         }
         return null;
     }

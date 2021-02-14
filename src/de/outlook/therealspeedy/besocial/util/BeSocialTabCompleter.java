@@ -18,11 +18,14 @@ public class BeSocialTabCompleter implements TabCompleter {
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("besocial") || cmd.getName().equalsIgnoreCase("beso")) {
 			
-			ArrayList<String> tabComplete = new ArrayList<String>();
+			ArrayList<String> tabComplete = new ArrayList<>();
 			
 			if (args.length == 1) {
 				if (args[0].startsWith("")) {
 					tabComplete.add("help");
+					tabComplete.add("ignore");
+					tabComplete.add("unignore");
+					tabComplete.add("rejoin");
 					tabComplete.add("info");
 					if (sender.hasPermission("besocial.admin")) {
 						tabComplete.add("admin");

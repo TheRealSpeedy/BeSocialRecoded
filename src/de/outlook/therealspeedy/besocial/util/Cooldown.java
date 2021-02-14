@@ -14,17 +14,17 @@ public class Cooldown extends JavaPlugin {
     private static boolean privateCooldown = plugin.getConfig().getBoolean("commands.everyCommandHasOwnCooldown");
     private static int rejoinCooldownTime = plugin.getConfig().getInt("commands.RejoinCooldownSeconds");
 
-    private static HashMap<UUID, Long> cooldownGlobal = new HashMap<UUID, Long>();
+    private static HashMap<UUID, Long> cooldownGlobal = new HashMap<>();
 
-    private static HashMap<UUID, Long> cooldownCuddle = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownHandshake = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownHighfive = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownHug = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownKiss = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownLick = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownPoke = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownSlap = new HashMap<UUID, Long>();
-    private static HashMap<UUID, Long> cooldownStroke = new HashMap<UUID, Long>();
+    private static HashMap<UUID, Long> cooldownCuddle = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownHandshake = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownHighfive = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownHug = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownKiss = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownLick = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownPoke = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownSlap = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownStroke = new HashMap<>();
 
 
 
@@ -93,7 +93,7 @@ public class Cooldown extends JavaPlugin {
     public static Long remainingCooldownSeconds(Player p, String command){
         UUID playeruuid = p.getUniqueId();
         HashMap<UUID, Long> cooldown = getCooldownHashMap(command);
-        Long remainingTime;
+        long remainingTime;
 
         if (cooldown.containsKey(playeruuid)) {
             remainingTime = (cooldown.get(playeruuid) + cooldownInConfig - System.currentTimeMillis())/1000;
@@ -108,7 +108,7 @@ public class Cooldown extends JavaPlugin {
         Long timeNow = System.currentTimeMillis();
         int cooldownTime = rejoinCooldownTime;
 
-        Long timePassedLong = (timeNow - timeLeftAt)/1000;
+        long timePassedLong = (timeNow - timeLeftAt)/1000;
         int timePassedInt = Math.toIntExact(timePassedLong);
 
         if (timePassedInt > cooldownTime) return 0;
