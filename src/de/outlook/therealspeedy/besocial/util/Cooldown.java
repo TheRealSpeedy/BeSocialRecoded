@@ -7,6 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Cooldown extends JavaPlugin {
     private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
@@ -53,6 +55,7 @@ public class Cooldown extends JavaPlugin {
             case "slap":
                 return cooldownSlap;
             case "stroke":
+            case "pet":
                 return cooldownStroke;
             default:
                 return null;
@@ -63,16 +66,23 @@ public class Cooldown extends JavaPlugin {
         UUID playeruuid = p.getUniqueId();
         HashMap<UUID, Long> cooldown = getCooldownHashMap(command);
 
-        if (cooldown.containsKey(playeruuid)) {
-            if (cooldown.get(playeruuid) > (System.currentTimeMillis()-(cooldownInConfig*1000))){
-                setNewCooldownNow(p, command);
-                return true;
+        try {
+
+            if (cooldown.containsKey(playeruuid)) {
+                if (cooldown.get(playeruuid) > (System.currentTimeMillis()-(cooldownInConfig*1000))){
+                    setNewCooldownNow(p, command);
+                    return true;
+                } else {
+                    setNewCooldownNow(p, command);
+                    return false;
+                }
             } else {
                 setNewCooldownNow(p, command);
                 return false;
             }
-        } else {
-            setNewCooldownNow(p, command);
+
+        } catch (Exception exception) {
+            plugin.getLogger().log(Level.SEVERE, "FATAL: HASHMAP MISSING OR CORRUPTED, INFORM THE PLUGIN'S AUTHOR!\ncommand cooldown hashmap: " + command);
             return false;
         }
     }
