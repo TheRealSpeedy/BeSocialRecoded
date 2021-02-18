@@ -16,6 +16,19 @@ public class SimpleSocialCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmdRaw, String label, String[] args) {
         String cmd = cmdRaw.getName().toLowerCase();
 
+        /*
+        tests to pass:
+            sender is member
+            target is set
+            cooldown is not active
+            target is online
+            target is sender >> selfsocial message and particles
+            target is member
+            target is not ignoring sender
+            sender is not ignoring target
+            >> all passed >> social messages and particles
+         */
+
         if (Players.notMember((Player) sender)) {
             sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.senderNotMember"));
             return false;

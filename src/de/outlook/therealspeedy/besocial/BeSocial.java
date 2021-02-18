@@ -85,6 +85,105 @@ public class BeSocial extends JavaPlugin {
 
 
     private void initConfig() {
+        //create default config values
+        prepareDefaultConfigValues();
+        //copy header to config
+        config.options().copyHeader(true);
+        //copy default values if not set already
+        config.options().copyDefaults(true);
+        //uncomment if needed:
+        //handleConfigVersionChange()
+        //set new config version
+        config.set("configVersion", "12.9");
+        config.set("enableCommand.besocialLeave", "always true");
+        config.set("enableCommand.besocialIgnore", "always true");
+        //TODO: remove falsify after implementation
+        config.set("enableCommand.shareHealth", false);
+        saveConfig();
+    }
+
+    private void initCommands() {
+        //check if command is enabled in config, then enable by setting executor
+        if (config.getBoolean("enableCommand.beso")) {
+            this.getCommand("besocial").setExecutor(new BeSocialCommand());
+            initnbr++;
+            this.getCommand("besocial").setTabCompleter(new BeSocialTabCompleter());
+        }
+        if (config.getBoolean("enableCommand.hug")) {
+            this.getCommand("hug").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.cuddle")) {
+            this.getCommand("cuddle").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.poke")) {
+            this.getCommand("poke").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.kiss")) {
+            this.getCommand("kiss").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.slap")) {
+            this.getCommand("slap").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.lick")) {
+            this.getCommand("lick").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.pet")) {
+            this.getCommand("pet").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.highfive")) {
+            this.getCommand("highfive").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.handshake")) {
+            this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
+            initnbr++;
+        }
+        if (config.getBoolean("enableCommand.shareHealth")) {
+            this.getCommand("sharehealth").setExecutor(new ShareHealth());
+            initnbr++;
+        }
+    }
+
+    private void initDatabase() {
+        databaseFile = new File(getDataFolder(), "database.yml");
+        if (!databaseFile.exists()) {
+            databaseFile.getParentFile().mkdirs();
+            saveResource("database.yml", false);
+        }
+
+        database = new YamlConfiguration();
+        try {
+            database.load(databaseFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("[BeSocial] Database initialized.");
+    }
+
+    public static FileConfiguration getDatabase(){
+        return BeSocial.database;
+    }
+
+    public static boolean saveDatabase(){
+        try {
+            database.save(databaseFile);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void prepareDefaultConfigValues() {
+        //default config values; edit when needed
         config.options().header("This is the BeSocial config.");
         config.addDefault("enablePlugin", true);
         config.addDefault("configVersion", "12.9");
@@ -171,94 +270,5 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.admin.specifyUser", "&cYou have to specify an user!");
         config.addDefault("messages.admin.success", "&2Operation successful.");
         config.addDefault("messages.console.askforhelp", true);
-        //copy header to config
-        config.options().copyHeader(true);
-        //copy default values if not set already
-        config.options().copyDefaults(true);
-        config.set("configVersion", "12.9");
-        config.set("enableCommand.besocialLeave", "always true");
-        config.set("enableCommand.besocialIgnore", "always true");
-        //TODO: remove falsify after implementation
-        config.set("enableCommand.shareHealth", false);
-        saveConfig();
-    }
-
-    private void initCommands() {
-        if (config.getBoolean("enableCommand.beso")) {
-            this.getCommand("besocial").setExecutor(new BeSocialCommand());
-            initnbr++;
-            this.getCommand("besocial").setTabCompleter(new BeSocialTabCompleter());
-        }
-        if (config.getBoolean("enableCommand.hug")) {
-            this.getCommand("hug").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.cuddle")) {
-            this.getCommand("cuddle").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.poke")) {
-            this.getCommand("poke").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.kiss")) {
-            this.getCommand("kiss").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.slap")) {
-            this.getCommand("slap").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.lick")) {
-            this.getCommand("lick").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.pet")) {
-            this.getCommand("pet").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.highfive")) {
-            this.getCommand("highfive").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.handshake")) {
-            this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.shareHealth")) {
-            this.getCommand("sharehealth").setExecutor(new ShareHealth());
-            initnbr++;
-        }
-    }
-
-    private void initDatabase() {
-        databaseFile = new File(getDataFolder(), "database.yml");
-        if (!databaseFile.exists()) {
-            databaseFile.getParentFile().mkdirs();
-            saveResource("database.yml", false);
-        }
-
-        database = new YamlConfiguration();
-        try {
-            database.load(databaseFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("[BeSocial] Database initialized.");
-    }
-
-    public static FileConfiguration getDatabase(){
-        return BeSocial.database;
-    }
-
-    public static boolean saveDatabase(){
-        try {
-            database.save(databaseFile);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }
