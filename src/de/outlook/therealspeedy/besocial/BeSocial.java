@@ -41,8 +41,6 @@ public class BeSocial extends JavaPlugin {
 
         System.out.println("[BeSocial] Playerlist initialized. List contains " + ((BeSocial.notMembers.length())-2) + " UUIDs.");
 
-        System.out.println("[BeSocial] Plugin ready for use.");
-
 
         if (config.getBoolean("enablePlugin")) {
             System.out.println("[BeSocial] BeSocial " + this.getDescription().getVersion() + " activated. Config initialized.");
@@ -57,8 +55,10 @@ public class BeSocial extends JavaPlugin {
         }
 
         if (config.getBoolean("messages.console.askforhelp")) {
-            System.out.println("§c[BeSocial] Hey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.))");
+            System.out.println("§a[BeSocial] Hey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.)");
         }
+
+        System.out.println("[BeSocial] Plugin ready for use.");
 
     }
 
@@ -171,11 +171,14 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.admin.specifyUser", "&cYou have to specify an user!");
         config.addDefault("messages.admin.success", "&2Operation successful.");
         config.addDefault("messages.console.askforhelp", true);
+        //copy header to config
         config.options().copyHeader(true);
+        //copy default values if not set already
         config.options().copyDefaults(true);
         config.set("configVersion", "12.9");
         config.set("enableCommand.besocialLeave", "always true");
         config.set("enableCommand.besocialIgnore", "always true");
+        //TODO: remove falsify after implementation
         config.set("enableCommand.shareHealth", false);
         saveConfig();
     }
@@ -187,39 +190,39 @@ public class BeSocial extends JavaPlugin {
             this.getCommand("besocial").setTabCompleter(new BeSocialTabCompleter());
         }
         if (config.getBoolean("enableCommand.hug")) {
-            this.getCommand("hug").setExecutor(new Hug());
+            this.getCommand("hug").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.cuddle")) {
-            this.getCommand("cuddle").setExecutor(new Cuddle());
+            this.getCommand("cuddle").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.poke")) {
-            this.getCommand("poke").setExecutor(new Poke());
+            this.getCommand("poke").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.kiss")) {
-            this.getCommand("kiss").setExecutor(new Kiss());
+            this.getCommand("kiss").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.slap")) {
-            this.getCommand("slap").setExecutor(new Slap());
+            this.getCommand("slap").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.lick")) {
-            this.getCommand("lick").setExecutor(new Lick());
+            this.getCommand("lick").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.pet")) {
-            this.getCommand("pet").setExecutor(new Pet());
+            this.getCommand("pet").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.highfive")) {
-            this.getCommand("highfive").setExecutor(new Highfive());
+            this.getCommand("highfive").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.handshake")) {
-            this.getCommand("handshake").setExecutor(new Handshake());
+            this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
         if (config.getBoolean("enableCommand.shareHealth")) {

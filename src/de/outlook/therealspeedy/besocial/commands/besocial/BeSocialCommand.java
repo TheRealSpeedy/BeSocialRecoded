@@ -2,7 +2,6 @@ package de.outlook.therealspeedy.besocial.commands.besocial;
 
 import de.outlook.therealspeedy.besocial.util.Cooldown;
 import de.outlook.therealspeedy.besocial.util.Database;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +27,7 @@ public class BeSocialCommand implements CommandExecutor {
 			sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.special.leaveBeSocial2"));
 		}
 		else {
-		if (ishelp(args)) {
+		if (isHelp(args)) {
 			HelpHandler.fire(sender, cmd, label, args, config);
 		}
 
@@ -89,7 +88,7 @@ public class BeSocialCommand implements CommandExecutor {
 }
 	
 	
-	private boolean ishelp(String[] args) {
+	private boolean isHelp(String[] args) {
 		if (args.length == 0) return true;
 		else return args[0].equalsIgnoreCase("help");
 	}

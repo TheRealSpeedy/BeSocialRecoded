@@ -69,7 +69,7 @@ public class Messages extends JavaPlugin {
 		int days = 0;
 		int hours = 0;
 		int minutes = 0;
-		int seconds = 0;
+		int seconds;
 		String message = plugin.getConfig().getString("messages.sender.error.rejoinCooldown");
 
 		while (cooldownSecondsLeft >= 86400) {

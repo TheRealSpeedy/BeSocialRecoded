@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Cooldown extends JavaPlugin {
     private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");

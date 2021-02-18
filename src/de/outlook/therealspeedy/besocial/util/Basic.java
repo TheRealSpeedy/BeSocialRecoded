@@ -3,8 +3,8 @@ package de.outlook.therealspeedy.besocial.util;
 public class Basic {
 
     public static boolean stringArrayContainsString(String[] array, String string) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(string)) {
+        for (String s : array) {
+            if (s.equalsIgnoreCase(string)) {
                 return true;
             }
         }
@@ -13,14 +13,14 @@ public class Basic {
 
     public static String makeDatabaseString(String[] sourceArray) {
         StringBuilder returnString = new StringBuilder();
-        for (int i = 0; i < sourceArray.length; i++) {
-            if (sourceArray[i].equals("")) {
+        for (String s : sourceArray) {
+            if (s.equals("")) {
                 continue;
             }
             if (returnString.toString().equals("")) {
-                returnString.append(sourceArray[i]);
+                returnString.append(s);
             } else {
-                returnString.append("&").append(sourceArray[i]);
+                returnString.append("&").append(s);
             }
         }
         return returnString.toString();
