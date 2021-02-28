@@ -22,6 +22,7 @@ public class HelpHandler {
             sender.sendMessage("     /slap <playername>");
             sender.sendMessage("     /handshake <playername>");
             sender.sendMessage("     /highfive <playername>");
+            sender.sendMessage("     /sharehealth <playername>");
             sender.sendMessage("");
             sender.sendMessage("     /beso ignore <playername>");
             sender.sendMessage("     /beso unignore <playername>");

@@ -8,12 +8,13 @@ import org.bukkit.plugin.Plugin;
 import java.util.logging.Level;
 
 import static de.outlook.therealspeedy.besocial.util.Basic.*;
+import static org.bukkit.Bukkit.getPluginManager;
 import static org.bukkit.Bukkit.getServer;
 
 public class Database {
 
     private static FileConfiguration database = BeSocial.getDatabase();
-    private static Plugin plugin = getServer().getPluginManager().getPlugin("BeSocial");
+    private static Plugin plugin = getServer().getPluginManager().getPlugin(BeSocial.name);
 
     public static void savePlayerLeftTime(Player player){
         String playerID = player.getUniqueId().toString();
@@ -81,6 +82,9 @@ public class Database {
     }
 
     public static void logAction(Player player, String action){
+        if (!plugin.getConfig().getBoolean("enablePlayerStatisticsLogging")) {
+            return;
+        }
         String playerID = player.getUniqueId().toString();
         String key = null;
         try {
@@ -122,49 +126,51 @@ public class Database {
     }
 
     private static String getKey(String input){
+        input = input.toLowerCase();
         switch (input){
-            case "sendCuddle":
+            case "sendcuddle":
                 return "scu";
-            case "receiveCuddle":
+            case "receivecuddle":
                 return "rcu";
-            case "sendHandshake":
+            case "sendhandshake":
                 return "shs";
-            case "receiveHandshake":
+            case "receivehandshake":
                 return "rhs";
-            case "sendHighfive":
+            case "sendhighfive":
                 return "shf";
-            case "receiveHighfive":
+            case "receivehighfive":
                 return "rhf";
-            case "sendHug":
+            case "sendhug":
                 return "shu";
-            case "receiveHug":
+            case "receivehug":
                 return "rhu";
-            case "sendKiss":
+            case "sendkiss":
                 return "ski";
-            case "receiveKiss":
+            case "receivekiss":
                 return "rki";
-            case "sendLick":
+            case "sendlick":
                 return "sli";
-            case "receiveLick":
+            case "receivelick":
                 return "rli";
-            case "sendPet":
+            case "sendpet":
                 return "spe";
-            case "receivePet":
+            case "receivepet":
                 return "rpe";
-            case "sendPoke":
+            case "sendpoke":
                 return "spo";
-            case "receivePoke":
+            case "receivepoke":
                 return "rpo";
-            case "sendSlap":
+            case "sendslap":
                 return "ssl";
-            case "receiveSlap":
+            case "receiveslap":
                 return "rsl";
-            case "sendHealth":
+            case "sendhealth":
                 return "she";
-            case "receiveHealth":
+            case "receivehealth":
                 return "rhe";
+            default:
+                return null;
         }
-        return null;
     }
 
 }

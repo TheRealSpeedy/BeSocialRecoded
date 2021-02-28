@@ -3,6 +3,7 @@ package de.outlook.therealspeedy.besocial;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.outlook.therealspeedy.besocial.commands.*;
 import de.outlook.therealspeedy.besocial.commands.besocial.BeSocialCommand;
@@ -22,6 +23,8 @@ public class BeSocial extends JavaPlugin {
     private String pluginFolder = this.getDataFolder().getAbsolutePath();
     private static File databaseFile;
     private static FileConfiguration database;
+    public static final double currentConfigVersion = 14.1;
+    public static final String name = "BeSocial";
 
 
     @Override
@@ -39,26 +42,32 @@ public class BeSocial extends JavaPlugin {
         BeSocial.notMembers.add("Debug UUID 0000-0000-0000-000000");
         BeSocial.notMembers.save();
 
-        System.out.println("[BeSocial] Playerlist initialized. List contains " + ((BeSocial.notMembers.length())-2) + " UUIDs.");
+        getLogger().log(Level.INFO, "Playerlist initialized. List contains " + ((BeSocial.notMembers.length()) - 2) + " UUIDs.");
+
+        if (config.getBoolean("enablePlayerStatisticsLogging")) {
+            getLogger().log(Level.INFO, "Player interaction logging to database is ACTIVATED.");
+        } else {
+            getLogger().log(Level.WARNING, "Player interaction logging to database is DEACTIVATED. Parts of this plugin may not function as intended!");
+        }
 
 
         if (config.getBoolean("enablePlugin")) {
-            System.out.println("[BeSocial] BeSocial " + this.getDescription().getVersion() + " activated. Config initialized.");
+            getLogger().log(Level.INFO, "BeSocial " + this.getDescription().getVersion() + " activated. Config initialized.");
 
             initCommands();
 
-            System.out.println("[BeSocial] " + initnbr + " commands initialized.");
+            getLogger().log(Level.INFO, "" + initnbr + " commands initialized.");
 
         } else {
-            System.out.println(ChatColor.RED + "[BeSocial] Plugin deactivated via config file. Stopping plugin. Please remove the BeSocial jar file from the plugins folder, if you don't want to use this plugin anymore!");
+            getLogger().log(Level.WARNING, "Plugin deactivated via config file. Stopping plugin. Please remove the BeSocial jar file from the plugins folder, if you don't want to use this plugin anymore!");
             getServer().getPluginManager().disablePlugin(this);
         }
 
         if (config.getBoolean("messages.console.askforhelp")) {
-            System.out.println("§a[BeSocial] Hey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.)");
+            getLogger().log(Level.INFO, "[BeSocial] §aHey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.)");
         }
 
-        System.out.println("[BeSocial] Plugin ready for use.");
+        getLogger().log(Level.INFO, "Plugin ready for use.");
 
     }
 
@@ -67,15 +76,15 @@ public class BeSocial extends JavaPlugin {
     public void onDisable() {
 
         BeSocial.notMembers.save();
-        System.out.println("[BeSocial] Playerlist with " + (BeSocial.notMembers.length()-2) + " UUIDs in it saved successfully.");
+        getLogger().log(Level.INFO, "Playerlist with " + (BeSocial.notMembers.length()-2) + " UUIDs in it saved successfully.");
 
         if (!saveDatabase()){
             this.getLogger().log(Level.SEVERE, "DATABASE SAVING FAILED! Could not write to folder!");
         } else {
-            System.out.println("[BeSocial] Database saved.");
+            getLogger().log(Level.INFO, "Database saved.");
         }
 
-        System.out.println("[BeSocial] BeSocial " + this.getDescription().getVersion() + " deactivated.");
+        getLogger().log(Level.INFO, "BeSocial " + this.getDescription().getVersion() + " deactivated.");
     }
 
 
@@ -91,16 +100,21 @@ public class BeSocial extends JavaPlugin {
         config.options().copyHeader(true);
         //copy default values if not set already
         config.options().copyDefaults(true);
-        //uncomment if needed:
-        //handleConfigVersionChange()
+        //handle config version changes
+        handleConfigVersionChange();
         //set new config version
-        config.set("configVersion", "12.9");
+        config.set("configVersion", currentConfigVersion);
         config.set("enableCommand.besocialLeave", "always true");
         config.set("enableCommand.besocialIgnore", "always true");
-        //TODO: remove falsify after implementation
-        config.set("enableCommand.shareHealth", false);
         saveConfig();
     }
+
+    private void handleConfigVersionChange() {
+        if (config.getDouble("configVersion") < 14.0) {
+            config.set("enableCommand.shareHealth", true);
+        }
+    }
+
 
     private void initCommands() {
         //check if command is enabled in config, then enable by setting executor
@@ -145,7 +159,7 @@ public class BeSocial extends JavaPlugin {
             this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
             initnbr++;
         }
-        if (config.getBoolean("enableCommand.shareHealth")) {
+        if (config.getBoolean("enableCommand.sharehealth")) {
             this.getCommand("sharehealth").setExecutor(new ShareHealth());
             initnbr++;
         }
@@ -161,7 +175,7 @@ public class BeSocial extends JavaPlugin {
         database = new YamlConfiguration();
         try {
             database.load(databaseFile);
-            System.out.println("[BeSocial] Database initialized.");
+            getLogger().log(Level.INFO, "Database initialized.");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +203,8 @@ public class BeSocial extends JavaPlugin {
         //default config values; edit when needed
         config.options().header("This is the BeSocial config.");
         config.addDefault("enablePlugin", true);
-        config.addDefault("configVersion", "12.9");
+        config.addDefault("configVersion", currentConfigVersion);
+        config.addDefault("enablePlayerStatisticsLogging", true);
         config.addDefault("enableCommand.beso", true);
         config.addDefault("enableCommand.hug", true);
         config.addDefault("enableCommand.cuddle", true);
@@ -200,7 +215,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("enableCommand.slap", true);
         config.addDefault("enableCommand.highfive", true);
         config.addDefault("enableCommand.handshake", true);
-        config.addDefault("enableCommand.shareHealth", false);
+        config.addDefault("enableCommand.shareHealth", true);
         config.addDefault("enableCommand.besocialLeave", "always true");
         config.addDefault("enableCommand.besocialRejoin", false);
         config.addDefault("enableCommand.besocialIgnore", "always true");
@@ -220,6 +235,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("particles.usedParticle.poke", "composter");
         config.addDefault("particles.usedParticle.slap", "angryVillager");
         config.addDefault("particles.usedParticle.pet", "happyVillager");
+        config.addDefault("particles.usedParticle.sharehealth", "hearts");
         config.addDefault("messages.prefix", "&7&o[&r&d&oBeSocial&r&7&o]");
         config.addDefault("messages.sender.error.senderNotMember", "&cI'm sorry, but you can't do that. You're not a member of the BeSocial program.");
         config.addDefault("messages.sender.error.targetNotMember", "&cI'm sorry, but you can't do that. This player isn't a member of the BeSocial program.");
@@ -234,8 +250,11 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.sender.error.selfSocial.pet", "&dSo cute!");
         config.addDefault("messages.sender.error.selfSocial.slap", "&cDon't slap yourself! Everything is fine.");
         config.addDefault("messages.sender.error.selfSocial.highfive", "&dWell done!");
-        config.addDefault("messages.sender.error.selfSocial.handshake", "&dBeing a gentleman is hard work.");
+        config.addDefault("messages.sender.error.selfSocial.handshake", "&cBeing a politician today, huh?");
+        config.addDefault("messages.sender.error.selfSocial.sharehealth", "&cThere is no point in doing this.");
         config.addDefault("messages.sender.error.cooldown", "&cSorry, this command is currently cooling down. Please wait %time seconds, then try again. &r&7&o(For help, try /besocial)");
+        config.addDefault("messages.sender.error.sharehealth.notEnoughHealth", "&cSharing now would kill you.");
+        config.addDefault("messages.sender.error.sharehealth.targetFullHealth", "&cThe chosen target already has full health.");
         config.addDefault("messages.sender.error.rejoinCooldown", "&cSorry, you can't rejoin yet. Please wait %time, then try again.");
         config.addDefault("messages.sender.error.rejoinAlreadyMember", "&cSorry, you can't rejoin, because you're already a member!");
         config.addDefault("messages.sender.error.ignoreAlreadyIgnoring", "&cSorry, you're already ignoring that player.");
@@ -248,7 +267,8 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.sender.success.pet", "&dYou petted &5%target&d!");
         config.addDefault("messages.sender.success.slap", "&4You slapped &c%target&4!");
         config.addDefault("messages.sender.success.highfive", "&dYou gave &5%target &da high five!");
-        config.addDefault("messages.sender.success.handshake", "&dYou give &5%target &da handshake.");
+        config.addDefault("messages.sender.success.handshake", "&dYou gave &5%target &da handshake.");
+        config.addDefault("messages.sender.success.sharehealth", "&dYou send &5%healthsend &dhealth to &5%target&d!");
         config.addDefault("messages.target.success.hug", "&5%sender &dhugged you!");
         config.addDefault("messages.target.success.cuddle", "&5%sender &dcuddled you!");
         config.addDefault("messages.target.success.kiss", "&5%sender &dkissed you!");
@@ -258,6 +278,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.target.success.slap", "&c%sender &4slapped you!");
         config.addDefault("messages.target.success.highfive", "&5%sender &dgave you a high five!");
         config.addDefault("messages.target.success.handshake", "&5%sender &dgives you a handshake.");
+        config.addDefault("messages.target.success.sharehealth", "&dYou received &5%healthsend &dhealth from &5%target&d!");
         config.addDefault("messages.special.leaveBeSocial", "&cIt's a pity you leave the BeSocial program. We will miss you.");
         config.addDefault("messages.special.leaveBeSocial2", "&cIf you want to join the program again, please ask an admin.");
         config.addDefault("messages.special.rejoinBeSocial1", "&aHOORAY! Your rejoin was successful! You can now use BeSocial again.");
@@ -274,4 +295,5 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.admin.success", "&2Operation successful.");
         config.addDefault("messages.console.askforhelp", true);
     }
+
 }

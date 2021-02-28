@@ -1,6 +1,4 @@
-add config reload system
 add language file system
-add sharehealth command
 tune admin command
 make help menu customizable
 add per-interaction opt-out
@@ -15,3 +13,5 @@ done:
 add particle effects
 add cooldown
 add rejoin command
+add sharehealth command
+add config reload system

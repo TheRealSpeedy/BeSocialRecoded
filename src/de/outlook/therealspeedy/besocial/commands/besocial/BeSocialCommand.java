@@ -16,7 +16,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class BeSocialCommand implements CommandExecutor {
 
-	private static FileConfiguration config = getServer().getPluginManager().getPlugin("BeSocial").getConfig();
+	private static FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -80,6 +80,7 @@ public class BeSocialCommand implements CommandExecutor {
 			sender.sendMessage(" Version: " + Messages.getPluginVersion());
 			sender.sendMessage(" Author: RainbowSpeedy");
 			sender.sendMessage(" Description: Make love, not war. <3");
+			sender.sendMessage(" Licence: All rights reserved.");
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "----------------------------------------------");
 				
 		}

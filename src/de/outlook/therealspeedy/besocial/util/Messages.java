@@ -1,5 +1,6 @@
 package de.outlook.therealspeedy.besocial.util;
 
+import de.outlook.therealspeedy.besocial.BeSocial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Messages extends JavaPlugin {
-	private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
+	private static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
 	
 	public static String getPrefix() {
 		
@@ -39,6 +40,19 @@ public class Messages extends JavaPlugin {
 		message = message.replaceAll("%sender", sName);
 		message = message.replaceAll("%target", tName);
 		
+		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static String getSharehealthMessage(String path, Player sender, Player target, double healthSend) {
+
+		String message = plugin.getConfig().getString(path);
+		String sName = sender.getName();
+		String tName = target.getName();
+
+		message = message.replaceAll("%sender", sName);
+		message = message.replaceAll("%target", tName);
+		message = message.replaceAll("%healthsend", ""+healthSend);
+
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 	

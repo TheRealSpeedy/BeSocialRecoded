@@ -1,6 +1,7 @@
 package de.outlook.therealspeedy.besocial.commands;
 
 import de.outlook.therealspeedy.besocial.util.Cooldown;
+import de.outlook.therealspeedy.besocial.util.Database;
 import de.outlook.therealspeedy.besocial.util.Messages;
 import de.outlook.therealspeedy.besocial.util.Players;
 import org.bukkit.Bukkit;
@@ -72,11 +73,18 @@ public class SimpleSocialCommand implements CommandExecutor {
                         sender.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.sender.success."+cmd, (Player) sender, target));
                         target.sendMessage(Messages.getPrefix() + Messages.getSocialMessage("messages.target.success."+cmd, (Player) sender, target));
                         Players.spawnParticles((Player) sender, target, cmd);
+                        databaseLogBridge(cmd, (Player) sender, target);
                         return true;
                     }
                 }
             }
         }
+    }
+
+
+    private static void databaseLogBridge(String command, Player sender, Player target) {
+        Database.logAction(sender, "send"+command);
+        Database.logAction(target, "receive"+command);
     }
 
 

@@ -1,5 +1,6 @@
 package de.outlook.therealspeedy.besocial.util;
 
+import de.outlook.therealspeedy.besocial.BeSocial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -10,7 +11,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class Cooldown extends JavaPlugin {
-    private static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
+    private static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
     private static Long cooldownInConfig = plugin.getConfig().getLong("commands.CooldownSeconds");
     private static boolean privateCooldown = plugin.getConfig().getBoolean("commands.everyCommandHasOwnCooldown");
     private static int rejoinCooldownTime = plugin.getConfig().getInt("commands.RejoinCooldownSeconds");
@@ -26,6 +27,7 @@ public class Cooldown extends JavaPlugin {
     private static HashMap<UUID, Long> cooldownPoke = new HashMap<>();
     private static HashMap<UUID, Long> cooldownSlap = new HashMap<>();
     private static HashMap<UUID, Long> cooldownStroke = new HashMap<>();
+    private static HashMap<UUID, Long> cooldownSharehealth = new HashMap<>();
 
 
 
@@ -56,6 +58,8 @@ public class Cooldown extends JavaPlugin {
             case "stroke":
             case "pet":
                 return cooldownStroke;
+            case "sharehealth":
+                return cooldownSharehealth;
             default:
                 return null;
         }

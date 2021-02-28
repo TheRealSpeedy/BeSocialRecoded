@@ -3,6 +3,7 @@ package de.outlook.therealspeedy.besocial.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.outlook.therealspeedy.besocial.BeSocial;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,7 +13,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class BeSocialTabCompleter implements TabCompleter {
 
-	private static FileConfiguration config = getServer().getPluginManager().getPlugin("BeSocial").getConfig();
+	private static FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {

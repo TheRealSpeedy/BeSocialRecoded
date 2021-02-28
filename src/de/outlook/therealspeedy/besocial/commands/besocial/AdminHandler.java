@@ -16,12 +16,13 @@ public class AdminHandler {
             if (args.length == 1) {
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial admin commands---");
                 sender.sendMessage("/beso a users - Commands for user management.");
+                sender.sendMessage("/beso config - Commands for config management.");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "----------------------------");
             }
             else {
                 if (args[1].equalsIgnoreCase("users")) {
                     if (args.length == 2) {
-                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial admin command list---");
+                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial admin users command list---");
                         sender.sendMessage(ChatColor.ITALIC + "Admin-Sub-Command 'users'");
                         sender.sendMessage("/beso a users reload - Loads old member list from disk, deletes the one stored in RAM.");
                         sender.sendMessage("/beso a users save - Saves the member list from RAM, deletes the one on disk.");
@@ -60,6 +61,19 @@ public class AdminHandler {
                                     sender.sendMessage(Messages.getPrefix() + Messages.getAdminMessage("messages.admin.userFreed", target));
                                 }
                             }
+                        }
+                    }
+                }
+                else if (args[1].equalsIgnoreCase("config")) {
+                    if (args.length == 2) {
+                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial admin config command list---");
+                        sender.sendMessage(ChatColor.ITALIC + "Admin-Sub-Command 'config'");
+                        sender.sendMessage("/beso a config reload - Reloads config file from filesystem.\n§cCaution: This will reset the config file if it is corrupted. Make sure to backup your config beforehand.");
+                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "----------------------------");
+                    }
+                    else {
+                        if (args[2].equalsIgnoreCase("reload")) {
+                            Bukkit.getPluginManager().getPlugin(BeSocial.name).reloadConfig();
                         }
                     }
                 }

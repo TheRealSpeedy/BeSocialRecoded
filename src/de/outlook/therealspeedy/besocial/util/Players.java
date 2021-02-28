@@ -17,7 +17,7 @@ import static de.outlook.therealspeedy.besocial.util.Basic.stringArrayContainsSt
 import static de.outlook.therealspeedy.besocial.util.Database.getIgnored;
 
 public class Players {
-	static Plugin plugin = Bukkit.getPluginManager().getPlugin("BeSocial");
+	static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
 	static FileConfiguration config = plugin.getConfig();
 	
 	public static boolean samePlayer(CommandSender sender, Player target) {
