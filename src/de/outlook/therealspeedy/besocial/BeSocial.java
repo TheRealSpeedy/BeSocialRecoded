@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import de.outlook.therealspeedy.besocial.commands.*;
 import de.outlook.therealspeedy.besocial.commands.besocial.BeSocialCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +22,7 @@ public class BeSocial extends JavaPlugin {
     private String pluginFolder = this.getDataFolder().getAbsolutePath();
     private static File databaseFile;
     private static FileConfiguration database;
+
 
     @Override
     public void onEnable() {
@@ -161,11 +161,14 @@ public class BeSocial extends JavaPlugin {
         database = new YamlConfiguration();
         try {
             database.load(databaseFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+            System.out.println("[BeSocial] Database initialized.");
 
-        System.out.println("[BeSocial] Database initialized.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Database loading error. BESOCIAL DOWN. Please check folder and file permissions!");
+            this.getPluginLoader().disablePlugin(this);
+
+        }
     }
 
     public static FileConfiguration getDatabase(){

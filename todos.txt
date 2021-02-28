@@ -7,7 +7,8 @@ add per-interaction opt-out
 better documentation / plugin page
 optional global chat
 add config failover
-
+add statistics
+add PlaceholderAPI support
 
 
 done:

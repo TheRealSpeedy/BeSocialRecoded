@@ -8,7 +8,7 @@ public class ShareHealth implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        //TODO: implement sharehealth: send target half of senders hearts
+        //TODO: implement sharehealth: send target half of senders hearts; remove falsify in BeSocial class after implementation
         /*
         tests to pass:
             sender is member
