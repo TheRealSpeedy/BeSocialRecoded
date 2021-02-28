@@ -16,7 +16,7 @@ public class AdminHandler {
             if (args.length == 1) {
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial admin commands---");
                 sender.sendMessage("/beso a users - Commands for user management.");
-                sender.sendMessage("/beso config - Commands for config management.");
+                sender.sendMessage("/beso a config - Commands for config management.");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "----------------------------");
             }
             else {
@@ -74,6 +74,7 @@ public class AdminHandler {
                     else {
                         if (args[2].equalsIgnoreCase("reload")) {
                             Bukkit.getPluginManager().getPlugin(BeSocial.name).reloadConfig();
+                            sender.sendMessage(Messages.getPrefix() + "§aConfig reloaded.");
                         }
                     }
                 }

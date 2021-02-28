@@ -97,16 +97,14 @@ public class ShareHealth implements CommandExecutor {
                             double missing;
                             double sending;
 
-                            shareable = Math.round(senderHealth * 2) / 2.0;
-                            if (shareable > (senderHealth/2.0)) {
-                                shareable = shareable - 0.5;
-                            }
+                            shareable = senderHealth / 2.0;
                             missing = target.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() - targetHealth;
+
                             if (shareable > missing) {
-                                sending = shareable;
+                                sending = missing;
                             }
                             else {
-                                sending = missing;
+                                sending = shareable;
                             }
 
                             //transaction

@@ -39,8 +39,8 @@ public class BeSocialTabCompleter implements TabCompleter {
 			else if (args.length == 2) {
 				if (args[0].startsWith("a")) {
 					tabComplete.add("users");
+					return tabComplete;
 				}
-				return tabComplete;
 			}
 			else if (args.length == 3) {
 				if (args[0].startsWith("a") && args[1].equalsIgnoreCase("users")) {
@@ -48,7 +48,6 @@ public class BeSocialTabCompleter implements TabCompleter {
 					tabComplete.add("save");
 					tabComplete.add("block");
 					tabComplete.add("free");
-					
 					return tabComplete;
 				}
 			}

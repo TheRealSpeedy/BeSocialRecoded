@@ -23,7 +23,7 @@ public class BeSocial extends JavaPlugin {
     private String pluginFolder = this.getDataFolder().getAbsolutePath();
     private static File databaseFile;
     private static FileConfiguration database;
-    public static final double currentConfigVersion = 14.1;
+    public static final double currentConfigVersion = 15.1;
     public static final String name = "BeSocial";
 
 
@@ -215,7 +215,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("enableCommand.slap", true);
         config.addDefault("enableCommand.highfive", true);
         config.addDefault("enableCommand.handshake", true);
-        config.addDefault("enableCommand.shareHealth", true);
+        config.addDefault("enableCommand.sharehealth", true);
         config.addDefault("enableCommand.besocialLeave", "always true");
         config.addDefault("enableCommand.besocialRejoin", false);
         config.addDefault("enableCommand.besocialIgnore", "always true");
