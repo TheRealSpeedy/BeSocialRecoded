@@ -1,6 +1,17 @@
 messages:
   prefix: '&7&o[&r&d&oBeSocial&r&7&o]'
   sender:
+    success:
+      hug: '&dYou hugged &5%target&d!'
+      cuddle: '&dYou cuddled &5%target&d!'
+      kiss: '&dYou kissed &5%target&d!'
+      lick: '&dYou licked &5%target&d!'
+      poke: '&dYou poked &5%target&d!'
+      pet: '&dYou petted &5%target&d!'
+      slap: '&4You slapped &c%target&4!'
+      highfive: '&dYou gave &5%target &da high five!'
+      handshake: '&dYou gave &5%target &da handshake.'
+      sharehealth: '&dYou send &5%healthsend &dhealth to &5%target&d!'
     error:
       unstableFeatureNotAvailable: '&cThis feature is unstable and currently disabled
         by the server''s administrators.'
@@ -33,17 +44,6 @@ messages:
         member!'
       ignoreAlreadyIgnoring: '&cSorry, you''re already ignoring that player.'
       ignoreNotIgnoring: '&cYou are currently not ignoring that player.'
-    success:
-      hug: '&dYou hugged &5%target&d!'
-      cuddle: '&dYou cuddled &5%target&d!'
-      kiss: '&dYou kissed &5%target&d!'
-      lick: '&dYou licked &5%target&d!'
-      poke: '&dYou poked &5%target&d!'
-      pet: '&dYou petted &5%target&d!'
-      slap: '&4You slapped &c%target&4!'
-      highfive: '&dYou gave &5%target &da high five!'
-      handshake: '&dYou gave &5%target &da handshake.'
-      sharehealth: '&dYou send &5%healthsend &dhealth to &5%target&d!'
   target:
     success:
       hug: '&5%sender &dhugged you!'
