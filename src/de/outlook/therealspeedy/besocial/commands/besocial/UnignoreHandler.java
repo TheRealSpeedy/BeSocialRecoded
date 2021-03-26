@@ -11,7 +11,7 @@ public class UnignoreHandler {
 
     public static void fire(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(Messages.getPrefix() + "/beso unignore <playername>");
+            sender.sendMessage(Messages.getPrefix() + "§a/beso unignore <playername>");
         }
 
         else {
