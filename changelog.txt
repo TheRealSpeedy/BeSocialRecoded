@@ -1,0 +1,9 @@
+Version 16.0
++ added unstable features mode to config
++ added unstable feature: command /getsocialstats
+    > allows you to see your BeSocial statistics
++ BeSocial now ships with a changelog file
++ added messages file name to config
++ messages are now read from a separate language file from a separate folder in the plugin's directory
++ the help page can now be customized via the helppage.txt file
++ custom messages are now read from a lang file from a separate folder to make translations more easy to do

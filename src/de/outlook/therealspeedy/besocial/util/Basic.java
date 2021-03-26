@@ -1,5 +1,10 @@
 package de.outlook.therealspeedy.besocial.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Basic {
 
     public static boolean stringArrayContainsString(String[] array, String string) {
@@ -41,6 +46,30 @@ public class Basic {
             }
         }
         return array;
+    }
+
+    public static String getFileContent(File file) {
+
+        if (!file.exists()) {
+            return null;
+        }
+
+        //stolen from https://www.javatpoint.com/how-to-read-file-line-by-line-in-java
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line=bufferedReader.readLine())!=null) {
+                stringBuilder.append(line).append("\n");
+            }
+            fileReader.close();
+            return stringBuilder.toString();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+
     }
 
 }

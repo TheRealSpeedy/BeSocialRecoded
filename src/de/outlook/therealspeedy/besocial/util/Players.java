@@ -17,18 +17,14 @@ import static de.outlook.therealspeedy.besocial.util.Basic.stringArrayContainsSt
 import static de.outlook.therealspeedy.besocial.util.Database.getIgnored;
 
 public class Players {
-	static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
-	static FileConfiguration config = plugin.getConfig();
+	private static final Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
+	private static final FileConfiguration config = plugin.getConfig();
 	
 	public static boolean samePlayer(CommandSender sender, Player target) {
-		Player s = (Player) sender;
-		String senderID = s.getUniqueId().toString();
-		String targetID = target.getUniqueId().toString();
-
-		return senderID.equals(targetID);
+		return ((Player) sender).getUniqueId().toString().equalsIgnoreCase(target.getUniqueId().toString());
 	}
 	
-	public static boolean notMember(Player player) {
+	public static boolean isNotMember(Player player) {
 		String playerID = player.getUniqueId().toString();
 
 		return BeSocial.notMembers.contains(playerID);
@@ -42,10 +38,6 @@ public class Players {
 
 	public static boolean targetIsIgnoringSender(Player sender, Player target) {
 		return stringArrayContainsString(getIgnored(target), sender.getUniqueId().toString());
-	}
-	
-	public static int commandCooldown() {
-        return plugin.getConfig().getInt("commands.CooldownSeconds");
 	}
 
 	private static Location playerHeartLocation (Player player){
@@ -106,7 +98,7 @@ public class Players {
 			case "angryVillager":
 				return Particle.VILLAGER_ANGRY;
 			default:
-				plugin.getLogger().log(Level.WARNING, "Your config is corrupted. Using default particle 'hearts' for all invalid particle effects.");
+				plugin.getLogger().log(Level.WARNING, "Some interactions are configured with invalid particle effects. Using default particle 'hearts' for these. Please repair your config.yml asap.");
 				return Particle.HEART;
 		}
 	}

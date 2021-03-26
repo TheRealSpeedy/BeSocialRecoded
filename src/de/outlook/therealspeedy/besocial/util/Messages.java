@@ -3,16 +3,22 @@ package de.outlook.therealspeedy.besocial.util;
 import de.outlook.therealspeedy.besocial.BeSocial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Messages extends JavaPlugin {
-	private static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
+	private static final Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
+	private static final FileConfiguration pluginConfig = plugin.getConfig();
+	private static final YamlConfiguration langConfig = BeSocial.getLangConfig();
+
+	//TODO: change to lang file
 	
 	public static String getPrefix() {
 		
-		String prefix = plugin.getConfig().getString("messages.prefix");
+		String prefix = langConfig.getString("messages.prefix");
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', prefix);
 		prefix = prefix + " ";
@@ -23,17 +29,21 @@ public class Messages extends JavaPlugin {
 	public static String getPluginVersion() {
 		return plugin.getDescription().getVersion();
 	}
+
+	public static String getWebsite() {
+		return plugin.getDescription().getWebsite();
+	}
 	
 	public static String getInfoMessage(String path) {
 		
-		String message = plugin.getConfig().getString(path);
+		String message = langConfig.getString(path);
 		
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 	
 	public static String getSocialMessage(String path, Player sender, Player target) {
 		
-		String message = plugin.getConfig().getString(path);
+		String message = langConfig.getString(path);
 		String sName = sender.getName();
 		String tName = target.getName();
 		
@@ -45,7 +55,7 @@ public class Messages extends JavaPlugin {
 
 	public static String getSharehealthMessage(String path, Player sender, Player target, double healthSend) {
 
-		String message = plugin.getConfig().getString(path);
+		String message = langConfig.getString(path);
 		String sName = sender.getName();
 		String tName = target.getName();
 
@@ -58,7 +68,7 @@ public class Messages extends JavaPlugin {
 	
 	public static String getAdminMessage(String path, Player target) {
 		
-		String message = plugin.getConfig().getString(path);
+		String message = langConfig.getString(path);
 		String tName = target.getName();
 		
 		message = message.replaceAll("%player", tName);
@@ -68,8 +78,8 @@ public class Messages extends JavaPlugin {
 
 	public static String getCooldownErrorMessage(){
 
-		String message = plugin.getConfig().getString("messages.sender.error.cooldown");
-		String cooldownTime = plugin.getConfig().getString("commands.CooldownSeconds");
+		String message = langConfig.getString("messages.sender.error.cooldown");
+		String cooldownTime = pluginConfig.getString("commands.CooldownSeconds");
 
 		message = message.replaceAll("%time", cooldownTime);
 
@@ -84,7 +94,7 @@ public class Messages extends JavaPlugin {
 		int hours = 0;
 		int minutes = 0;
 		int seconds;
-		String message = plugin.getConfig().getString("messages.sender.error.rejoinCooldown");
+		String message = langConfig.getString("messages.sender.error.rejoinCooldown");
 
 		while (cooldownSecondsLeft >= 86400) {
 			days++;

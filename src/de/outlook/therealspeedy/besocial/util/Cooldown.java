@@ -11,23 +11,23 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class Cooldown extends JavaPlugin {
-    private static Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
-    private static Long cooldownInConfig = plugin.getConfig().getLong("commands.CooldownSeconds");
-    private static boolean privateCooldown = plugin.getConfig().getBoolean("commands.everyCommandHasOwnCooldown");
-    private static int rejoinCooldownTime = plugin.getConfig().getInt("commands.RejoinCooldownSeconds");
+    private static final Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
+    private static final Long cooldownInConfig = plugin.getConfig().getLong("commands.CooldownSeconds");
+    private static final boolean privateCooldown = plugin.getConfig().getBoolean("commands.everyCommandHasOwnCooldown");
+    private static final int rejoinCooldownTime = plugin.getConfig().getInt("commands.RejoinCooldownSeconds");
 
-    private static HashMap<UUID, Long> cooldownGlobal = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownGlobal = new HashMap<>();
 
-    private static HashMap<UUID, Long> cooldownCuddle = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownHandshake = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownHighfive = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownHug = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownKiss = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownLick = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownPoke = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownSlap = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownStroke = new HashMap<>();
-    private static HashMap<UUID, Long> cooldownSharehealth = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownCuddle = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownHandshake = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownHighfive = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownHug = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownKiss = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownLick = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownPoke = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownSlap = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownStroke = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldownSharehealth = new HashMap<>();
 
 
 
@@ -94,12 +94,8 @@ public class Cooldown extends JavaPlugin {
         UUID playeruuid = p.getUniqueId();
         HashMap<UUID, Long> cooldown = getCooldownHashMap(command);
 
-        if (cooldown.containsKey(playeruuid)) {
-            cooldown.remove(playeruuid);
-            cooldown.put(playeruuid, System.currentTimeMillis());
-        } else {
-            cooldown.put(playeruuid, System.currentTimeMillis());
-        }
+        cooldown.remove(playeruuid);
+        cooldown.put(playeruuid, System.currentTimeMillis());
 
     }
 

@@ -16,14 +16,14 @@ import static org.bukkit.Bukkit.getServer;
 
 public class BeSocialCommand implements CommandExecutor {
 
-	private static FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
+	private static final FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		String senderID = ((Player) sender).getUniqueId().toString();
 		
-		if (Players.notMember((Player) sender) && !sender.hasPermission("besocial.admin") && !config.getBoolean("enableCommand.besocialRejoin")) {
+		if (Players.isNotMember((Player) sender) && !sender.hasPermission("besocial.admin") && !config.getBoolean("enableCommand.besocialRejoin")) {
 			sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.special.leaveBeSocial2"));
 		}
 		else {
@@ -47,7 +47,7 @@ public class BeSocialCommand implements CommandExecutor {
 				return true;
 			}
 
-			if (Players.notMember((Player) sender)) {
+			if (Players.isNotMember((Player) sender)) {
 				if (Cooldown.rejoinCooldownSecondsLeft((Player) sender) > 0) {
 					sender.sendMessage(Messages.getRejoinCooldownErrorMessage((Player) sender));
 				} else {
@@ -74,13 +74,14 @@ public class BeSocialCommand implements CommandExecutor {
 		else if (args[0].equalsIgnoreCase("info")) {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial information---");
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + " This plugin was originally written for the RainbowRED Network.");
-			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + " This plugin can be used on any server for free!");
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + " Use it for free on any server!");
 			sender.sendMessage("");
 			sender.sendMessage(" Plugin name: BeSocial");
 			sender.sendMessage(" Version: " + Messages.getPluginVersion());
 			sender.sendMessage(" Author: RainbowSpeedy");
 			sender.sendMessage(" Description: Make love, not war. <3");
 			sender.sendMessage(" Licence: All rights reserved.");
+			sender.sendMessage(" Web: " + Messages.getWebsite());
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "----------------------------------------------");
 				
 		}

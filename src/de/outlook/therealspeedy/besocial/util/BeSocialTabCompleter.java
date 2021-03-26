@@ -13,7 +13,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class BeSocialTabCompleter implements TabCompleter {
 
-	private static FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
+	private static final FileConfiguration config = getServer().getPluginManager().getPlugin(BeSocial.name).getConfig();
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {

@@ -8,13 +8,12 @@ import org.bukkit.plugin.Plugin;
 import java.util.logging.Level;
 
 import static de.outlook.therealspeedy.besocial.util.Basic.*;
-import static org.bukkit.Bukkit.getPluginManager;
 import static org.bukkit.Bukkit.getServer;
 
 public class Database {
 
-    private static FileConfiguration database = BeSocial.getDatabase();
-    private static Plugin plugin = getServer().getPluginManager().getPlugin(BeSocial.name);
+    private static final FileConfiguration database = BeSocial.getDatabase();
+    private static final Plugin plugin = getServer().getPluginManager().getPlugin(BeSocial.name);
 
     public static void savePlayerLeftTime(Player player){
         String playerID = player.getUniqueId().toString();
@@ -107,13 +106,14 @@ public class Database {
 
     public static int getStatistic(Player player, String source){
         String playerID = player.getUniqueId().toString();
-        String key = null;
+        String key;
         try {
             key = getKey(source);
         } catch (Exception e) {
             e.printStackTrace();
             plugin.getLogger().log(Level.SEVERE, "DATABASE ERROR. INFORM THE PLUGIN AUTHOR(S) ABOUT THIS!");
-            plugin.getLogger().log(Level.SEVERE, "ERROR INFO getStatistics,getKey for:" + source);
+            plugin.getLogger().log(Level.SEVERE, "DEV INFO: Error occurred in getStatistics,getKey for:" + source);
+            return -1;
         }
 
         String path = playerID + "." + key;

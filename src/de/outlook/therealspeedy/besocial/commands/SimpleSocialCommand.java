@@ -17,6 +17,11 @@ public class SimpleSocialCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmdRaw, String label, String[] args) {
         String cmd = cmdRaw.getName().toLowerCase();
 
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(Messages.getPrefix() + "§cOnly players can interact with players.");
+            return false;
+        }
+
         /*
         tests to pass:
             sender is member
@@ -30,7 +35,7 @@ public class SimpleSocialCommand implements CommandExecutor {
             >> all passed >> social messages and particles
          */
 
-        if (Players.notMember((Player) sender)) {
+        if (Players.isNotMember((Player) sender)) {
             sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.senderNotMember"));
             return false;
         }
@@ -57,7 +62,7 @@ public class SimpleSocialCommand implements CommandExecutor {
                     return true;
                 }
                 else {
-                    if (Players.notMember(target)) {
+                    if (Players.isNotMember(target)) {
                         sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.targetNotMember"));
                         return true;
                     }

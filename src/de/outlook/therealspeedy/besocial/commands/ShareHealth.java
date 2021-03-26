@@ -16,6 +16,12 @@ public class ShareHealth implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(Messages.getPrefix() + "§cCan't divide infinity by 2.");
+            return false;
+        }
+
         /*
         tests to pass:
             sender is member
@@ -41,7 +47,7 @@ public class ShareHealth implements CommandExecutor {
         String cmd = command.getName();
 
 
-        if (Players.notMember((Player) sender)) {
+        if (Players.isNotMember((Player) sender)) {
             sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.senderNotMember"));
             return false;
         }
@@ -67,7 +73,7 @@ public class ShareHealth implements CommandExecutor {
                     return false;
                 }
                 else {
-                    if (Players.notMember(target)) {
+                    if (Players.isNotMember(target)) {
                         sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.targetNotMember"));
                         return true;
                     }
@@ -100,12 +106,7 @@ public class ShareHealth implements CommandExecutor {
                             shareable = senderHealth / 2.0;
                             missing = target.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() - targetHealth;
 
-                            if (shareable > missing) {
-                                sending = missing;
-                            }
-                            else {
-                                sending = shareable;
-                            }
+                            sending = Math.min(shareable, missing);
 
                             //transaction
                             ((Player) sender).setHealth(senderHealth - sending);

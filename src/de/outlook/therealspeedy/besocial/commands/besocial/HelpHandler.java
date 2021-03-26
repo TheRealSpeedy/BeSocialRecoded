@@ -1,5 +1,6 @@
 package de.outlook.therealspeedy.besocial.commands.besocial;
 
+import de.outlook.therealspeedy.besocial.BeSocial;
 import de.outlook.therealspeedy.besocial.util.Players;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +12,10 @@ public class HelpHandler {
 
     public static void fire(CommandSender sender, Command cmd, String label, String[] args, FileConfiguration config) {
         if (Players.isMember((Player) sender)) {
+            //new help page handler
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', BeSocial.helpPage));
+
+/*          Old help page handler:
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "---BeSocial command list---");
             sender.sendMessage("     /besocial = /beso");
             sender.sendMessage("     /hug <playername>");
@@ -31,7 +36,7 @@ public class HelpHandler {
             sender.sendMessage("");
             sender.sendMessage("     To leave the BeSocial program,");
             sender.sendMessage("     use the following command:" + ChatColor.BOLD + " /besocial leave");
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "-----------------------");
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "-----------------------"); */
         }
 
         else if (config.getBoolean("enableCommand.besocialRejoin") && sender.hasPermission("besocial.rejoin")){

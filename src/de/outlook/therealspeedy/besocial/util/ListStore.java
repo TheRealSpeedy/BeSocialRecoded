@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class ListStore {
 	
-	private File storageFile;
-	private ArrayList<String> values;
+	private final File storageFile;
+	private final ArrayList<String> values;
 	
 	public ListStore(File file) {
 		this.storageFile  = file;

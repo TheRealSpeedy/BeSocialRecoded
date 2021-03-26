@@ -1,12 +1,11 @@
-add language file system
 tune admin command
-make help menu customizable
+make admin help menu customizable
 add per-interaction opt-out
 better documentation / plugin page
 optional global chat
 add config failover
-add statistics
 add PlaceholderAPI support
+make verbosity configurable
 
 
 done:
@@ -15,3 +14,6 @@ add cooldown
 add rejoin command
 add sharehealth command
 add config reload system
+make help menu customizable
+add statistics
+add language file system

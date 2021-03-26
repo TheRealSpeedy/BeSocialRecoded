@@ -1,0 +1,20 @@
+&d---BeSocial command list---------------------
+&f     /besocial = /beso
+     /hug <playername>
+     /cuddle <playername>
+     /kiss <playername>
+     /lick <playername>
+     /poke <playername>
+     /pet <playername>
+     /slap <playername>
+     /handshake <playername>
+     /highfive <playername>
+     /sharehealth <playername>
+
+     /beso ignore <playername>
+     /beso unignore <playername>
+     /beso info
+
+     To leave the BeSocial program,
+     use the following command: /besocial leave
+&d---------------------------------------------

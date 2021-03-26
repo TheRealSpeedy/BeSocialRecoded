@@ -1,0 +1,76 @@
+messages:
+  prefix: '&7&o[&r&d&oBeSocial&r&7&o]'
+  sender:
+    error:
+      unstableFeatureNotAvailable: '&cThis feature is unstable and currently disabled
+        by the server''s administrators.'
+      senderNotMember: '&cI''m sorry, but you can''t do that. You''re not a member
+        of the BeSocial program.'
+      targetNotMember: '&cI''m sorry, but you can''t do that. This player isn''t a
+        member of the BeSocial program.'
+      targetOffline: '&cThis command can only be used if the targeted player is online.'
+      targetIgnoringSender: '&cI''m afraid you can''t do that.'
+      senderIgnoringTarget: '&cSorry, you can''t interact with players you''re ignoring.'
+      selfSocial:
+        hug: '&dYou hugged &5yourself &d! Now try hugging someone else.'
+        cuddle: '&dYou cuddled &5yourself &d! Now try hugging someone else.'
+        kiss: '&cQuite narcissistic, huh?'
+        lick: '&dYou licked &5yourself&d! &r&o&7(That''s disgusting...)'
+        poke: '&dYou poked &5yourself&d!'
+        pet: '&dSo cute!'
+        slap: '&cDon''t slap yourself! Everything is fine.'
+        highfive: '&dWell done!'
+        handshake: '&cBeing a politician today, huh?'
+        sharehealth: '&cThere is no point in doing this.'
+      cooldown: '&cSorry, this command is currently cooling down. Please wait %time
+        seconds, then try again. &r&7&o(For help, try /besocial)'
+      sharehealth:
+        notEnoughHealth: '&cSharing now would kill you.'
+        targetFullHealth: '&cThe chosen target already has full health.'
+      rejoinCooldown: '&cSorry, you can''t rejoin yet. Please wait %time, then try
+        again.'
+      rejoinAlreadyMember: '&cSorry, you can''t rejoin, because you''re already a
+        member!'
+      ignoreAlreadyIgnoring: '&cSorry, you''re already ignoring that player.'
+      ignoreNotIgnoring: '&cYou are currently not ignoring that player.'
+    success:
+      hug: '&dYou hugged &5%target&d!'
+      cuddle: '&dYou cuddled &5%target&d!'
+      kiss: '&dYou kissed &5%target&d!'
+      lick: '&dYou licked &5%target&d!'
+      poke: '&dYou poked &5%target&d!'
+      pet: '&dYou petted &5%target&d!'
+      slap: '&4You slapped &c%target&4!'
+      highfive: '&dYou gave &5%target &da high five!'
+      handshake: '&dYou gave &5%target &da handshake.'
+      sharehealth: '&dYou send &5%healthsend &dhealth to &5%target&d!'
+  target:
+    success:
+      hug: '&5%sender &dhugged you!'
+      cuddle: '&5%sender &dcuddled you!'
+      kiss: '&5%sender &dkissed you!'
+      lick: '&5%sender &dlicked you!'
+      poke: '&5%sender &dpoked you!'
+      pet: '&5%sender &dpetted you!'
+      slap: '&c%sender &4slapped you!'
+      highfive: '&5%sender &dgave you a high five!'
+      handshake: '&5%sender &dgives you a handshake.'
+      sharehealth: '&dYou received &5%healthsend &dhealth from &5%target&d!'
+  special:
+    leaveBeSocial: '&cIt''s a pity you leave the BeSocial program. We will miss you.'
+    leaveBeSocial2: '&cIf you want to join the program again, please ask an admin.'
+    rejoinBeSocial1: '&aHOORAY! Your rejoin was successful! You can now use BeSocial
+      again.'
+    rejoinForbidden: '&cYou can''t rejoin the BeSocial program.'
+    ignoreSuccessful: '&aYou are now ignoring &c%target&a.'
+    unignoreSuccessful: '&2%target&a can now interact with you again.'
+    error: '&cERROR!'
+  admin:
+    notAnAdmin: '&cYou can''t do that. Why? Because you don''t have the &r&o&cbesocial.admin
+      &r&cpermission.'
+    userBlocked: '&2The player &a%player &2was banned from the BeSocial program.'
+    userFreed: '&2The player &a%player &2can now use BeSocial''s commands.'
+    listReloaded: '&2Playerlist successfully reloaded.'
+    listSaved: '&2Playerlist successfully saved.'
+    specifyUser: '&cYou have to specify an user!'
+    success: '&2Operation successful.'

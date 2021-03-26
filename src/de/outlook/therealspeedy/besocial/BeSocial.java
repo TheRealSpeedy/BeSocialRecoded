@@ -2,12 +2,14 @@ package de.outlook.therealspeedy.besocial;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import de.outlook.therealspeedy.besocial.commands.*;
 import de.outlook.therealspeedy.besocial.commands.besocial.BeSocialCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,16 +17,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.outlook.therealspeedy.besocial.util.BeSocialTabCompleter;
 import de.outlook.therealspeedy.besocial.util.ListStore;
 
+import static de.outlook.therealspeedy.besocial.util.Basic.getFileContent;
+
 public class BeSocial extends JavaPlugin {
 
-    private FileConfiguration config = this.getConfig();
+    private final FileConfiguration config = this.getConfig();
     private int initnbr = 0;
     public static ListStore notMembers;
-    private String pluginFolder = this.getDataFolder().getAbsolutePath();
+    private final String pluginFolder = this.getDataFolder().getAbsolutePath();
+    public final Path messagesPath = Paths.get(pluginFolder + File.separator + "LanguageFiles");
+    private static final String defaultLangFileName = "english.lang.yml";
+    private static String configuredLangFileName;
+    public static YamlConfiguration lang = new YamlConfiguration();
     private static File databaseFile;
     private static FileConfiguration database;
-    public static final double currentConfigVersion = 15.1;
+    public static final double currentConfigVersion = 16.0;
     public static final String name = "BeSocial";
+    private static boolean unstableModeActive;
+    public static final int sumUnstableFeatures = 1;
+    public static String helpPage = null;
 
 
     @Override
@@ -32,7 +43,24 @@ public class BeSocial extends JavaPlugin {
 
         initConfig();
 
+        if (config.getBoolean("enableUnstableFeatures")) {
+            unstableModeActive = true;
+            getLogger().log(Level.WARNING, "You've enabled unstable features in the config. Please report bugs here: https://www.spigotmc.org/threads/333423/");
+            getLogger().log(Level.WARNING, "Don't use unstable feature mode on live servers. This is only for testing.");
+            getLogger().log(Level.WARNING, "Make backups of BeSocial's database before using unstable features.");
+            getLogger().log(Level.INFO, "There are " + sumUnstableFeatures + " unstable features in this BeSocial build.");
+        } else {
+            unstableModeActive = false;
+        }
+
         initDatabase();
+
+        copyChangelog();
+
+        loadHelpPage();
+
+        configuredLangFileName = config.getString("messages.file");
+        loadLangConfig();
 
 
         (new File(pluginFolder)).mkdirs();
@@ -64,7 +92,7 @@ public class BeSocial extends JavaPlugin {
         }
 
         if (config.getBoolean("messages.console.askforhelp")) {
-            getLogger().log(Level.INFO, "[BeSocial] §aHey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.)");
+            getLogger().log(Level.INFO, "§aHey! If you like this plugin please help me out. Leave a rating and comment at spigot.mc, take screenshots that I can use for the plugin page and recommend it to other server owners. (You can deactivate this message in the config file.)");
         }
 
         getLogger().log(Level.INFO, "Plugin ready for use.");
@@ -84,7 +112,7 @@ public class BeSocial extends JavaPlugin {
             getLogger().log(Level.INFO, "Database saved.");
         }
 
-        getLogger().log(Level.INFO, "BeSocial " + this.getDescription().getVersion() + " deactivated.");
+        getLogger().log(Level.INFO, "BeSocial " + this.getDescription().getVersion() + " deactivated. See you next time.");
     }
 
 
@@ -110,13 +138,18 @@ public class BeSocial extends JavaPlugin {
     }
 
     private void handleConfigVersionChange() {
-        if (config.getDouble("configVersion") < 14.0) {
+        double configVersion = config.getDouble("configVersion");
+
+        if (configVersion < 14.0) {
             config.set("enableCommand.shareHealth", true);
         }
     }
 
 
     private void initCommands() {
+        //enable statistics checker by default
+        this.getCommand("getsocialstats").setExecutor(new GetSocialStats());
+        initnbr++;
         //check if command is enabled in config, then enable by setting executor
         if (config.getBoolean("enableCommand.beso")) {
             this.getCommand("besocial").setExecutor(new BeSocialCommand());
@@ -185,6 +218,49 @@ public class BeSocial extends JavaPlugin {
         }
     }
 
+    private void loadHelpPage() {
+
+        //copy default helppage if config not present
+        File helpPageFile = new File(pluginFolder, "helppage.txt");
+        if (!helpPageFile.exists()) {
+            try {
+                Files.copy(BeSocial.class.getResourceAsStream("/helppage.txt"), Paths.get(pluginFolder + File.separator + "helppage.txt"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                getLogger().log(Level.SEVERE, "There was a problem saving the helppage file!");
+                return;
+            }
+        }
+
+        helpPage = getFileContent(helpPageFile);
+        if (helpPage == null) {
+            getLogger().log(Level.SEVERE, "There was a problem while loading the helppage file!");
+        }
+
+    }
+
+    private void loadLangConfig() {
+        File defaultLangFile = new File(messagesPath + File.separator + defaultLangFileName);
+        File configuredLangFile = new File(messagesPath + File.separator + configuredLangFileName);
+        if (!defaultLangFile.exists()) {
+            try {
+                Files.copy(BeSocial.class.getResourceAsStream("/" + defaultLangFileName), defaultLangFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                getLogger().log(Level.SEVERE, "Couldn't save default messages language file. Is there something wrong with the folder permissions?");
+            }
+        }
+        if (!configuredLangFile.exists()) {
+            getLogger().log(Level.SEVERE, "The messages language configuration file specified in BeSocial's config.yml doesn't exist. Please check your configuration.");
+            getLogger().log(Level.WARNING, "Custom messages configuration file missing, using default file: " + defaultLangFileName);
+            getLogger().log(Level.INFO, "Copying " + defaultLangFileName + " into memory...");
+            lang = YamlConfiguration.loadConfiguration(defaultLangFile);
+        } else {
+            getLogger().log(Level.INFO, "Copying " + configuredLangFileName + " into memory...");
+            lang = YamlConfiguration.loadConfiguration(configuredLangFile);
+        }
+    }
+
     public static FileConfiguration getDatabase(){
         return BeSocial.database;
     }
@@ -200,11 +276,12 @@ public class BeSocial extends JavaPlugin {
     }
 
     private void prepareDefaultConfigValues() {
-        //default config values; edit when needed
-        config.options().header("This is the BeSocial config.");
+        //default config values
+        config.options().header("This is the BeSocial config. Backup this file before and after editing. Invalid configurations will lead to a reset of the whole file!");
         config.addDefault("enablePlugin", true);
         config.addDefault("configVersion", currentConfigVersion);
         config.addDefault("enablePlayerStatisticsLogging", true);
+        config.addDefault("enableUnstableFeatures", false);
         config.addDefault("enableCommand.beso", true);
         config.addDefault("enableCommand.hug", true);
         config.addDefault("enableCommand.cuddle", true);
@@ -236,6 +313,8 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("particles.usedParticle.slap", "angryVillager");
         config.addDefault("particles.usedParticle.pet", "happyVillager");
         config.addDefault("particles.usedParticle.sharehealth", "hearts");
+        config.addDefault("messages.file", defaultLangFileName);
+        /* legacy messages default values
         config.addDefault("messages.prefix", "&7&o[&r&d&oBeSocial&r&7&o]");
         config.addDefault("messages.sender.error.senderNotMember", "&cI'm sorry, but you can't do that. You're not a member of the BeSocial program.");
         config.addDefault("messages.sender.error.targetNotMember", "&cI'm sorry, but you can't do that. This player isn't a member of the BeSocial program.");
@@ -259,6 +338,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.sender.error.rejoinAlreadyMember", "&cSorry, you can't rejoin, because you're already a member!");
         config.addDefault("messages.sender.error.ignoreAlreadyIgnoring", "&cSorry, you're already ignoring that player.");
         config.addDefault("messages.sender.error.ignoreNotIgnoring", "&cYou are currently not ignoring that player.");
+        config.addDefault("messages.sender.error.unstableFeatureNotAvailable", "&cThis feature is unstable and currently disabled by the server's administrators.");
         config.addDefault("messages.sender.success.hug", "&dYou hugged &5%target&d!");
         config.addDefault("messages.sender.success.cuddle", "&dYou cuddled &5%target&d!");
         config.addDefault("messages.sender.success.kiss", "&dYou kissed &5%target&d!");
@@ -293,7 +373,25 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.admin.listSaved", "&2Playerlist successfully saved.");
         config.addDefault("messages.admin.specifyUser", "&cYou have to specify an user!");
         config.addDefault("messages.admin.success", "&2Operation successful.");
+         */
         config.addDefault("messages.console.askforhelp", true);
+    }
+
+    private void copyChangelog() {
+        try {
+            Files.copy(BeSocial.class.getResourceAsStream("/changelog.txt"), Paths.get(pluginFolder + File.separator + "changelog.txt"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            getLogger().log(Level.SEVERE, "Something is wrong with your file system. Make sure this plugin has access to its folders!");
+        }
+    }
+
+    public static boolean unstableModeIsActive() {
+        return unstableModeActive;
+    }
+
+    public static YamlConfiguration getLangConfig() {
+        return lang;
     }
 
 }
