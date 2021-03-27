@@ -70,7 +70,7 @@ public class BeSocial extends JavaPlugin {
         BeSocial.notMembers.add("Debug UUID 0000-0000-0000-000000");
         BeSocial.notMembers.save();
 
-        getLogger().log(Level.INFO, "Playerlist initialized. List contains " + ((BeSocial.notMembers.length()) - 2) + " UUIDs.");
+        getLogger().log(Level.INFO, "Left players list initialized. List contains " + ((BeSocial.notMembers.length()) - 2) + " UUIDs.");
 
         if (config.getBoolean("enablePlayerStatisticsLogging")) {
             getLogger().log(Level.INFO, "Player interaction logging to database is ACTIVATED.");
@@ -104,7 +104,7 @@ public class BeSocial extends JavaPlugin {
     public void onDisable() {
 
         BeSocial.notMembers.save();
-        getLogger().log(Level.INFO, "Playerlist with " + (BeSocial.notMembers.length()-2) + " UUIDs in it saved successfully.");
+        getLogger().log(Level.INFO, "Left players list with " + (BeSocial.notMembers.length()-2) + " UUIDs in it saved successfully.");
 
         if (!saveDatabase()){
             this.getLogger().log(Level.SEVERE, "DATABASE SAVING FAILED! Could not write to folder!");
@@ -244,6 +244,7 @@ public class BeSocial extends JavaPlugin {
         File configuredLangFile = new File(messagesPath + File.separator + configuredLangFileName);
         if (!defaultLangFile.exists()) {
             try {
+                Files.createDirectories(messagesPath);
                 Files.copy(BeSocial.class.getResourceAsStream("/" + defaultLangFileName), defaultLangFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
                 exception.printStackTrace();
