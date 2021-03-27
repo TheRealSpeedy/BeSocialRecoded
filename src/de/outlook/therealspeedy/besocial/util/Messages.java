@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Messages extends JavaPlugin {
 	private static final Plugin plugin = Bukkit.getPluginManager().getPlugin(BeSocial.name);
 	private static final FileConfiguration pluginConfig = plugin.getConfig();
-	private static final YamlConfiguration langConfig = BeSocial.getLangConfig();
+	private static YamlConfiguration langConfig = BeSocial.getLangConfig();
 
 	//TODO: change to lang file
 	
@@ -116,6 +116,10 @@ public class Messages extends JavaPlugin {
 		message = getPrefix() + message;
 
 		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static void update() {
+		langConfig = BeSocial.getLangConfig();
 	}
 
 }

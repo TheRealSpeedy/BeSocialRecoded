@@ -146,6 +146,10 @@ public class BeSocial extends JavaPlugin {
         if (configVersion < 14.0) {
             config.set("enableCommand.shareHealth", true);
         }
+        if (configVersion < 16.0){
+            getLogger().log(Level.WARNING, "It seems like you are updating from an older version. Please note that all ingame messages now use a separate messages language file.");
+            getLogger().log(Level.WARNING, "It is recommended to delete the current config.yml and let BeSocial generate a new one. Make sure to backup your current config elsewhere before doing that.");
+        }
     }
 
 
@@ -385,7 +389,7 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("messages.admin.listSaved", "&2Playerlist successfully saved.");
         config.addDefault("messages.admin.specifyUser", "&cYou have to specify an user!");
         config.addDefault("messages.admin.success", "&2Operation successful.");
-         */
+        */
         config.addDefault("messages.console.askforhelp", true);
     }
 

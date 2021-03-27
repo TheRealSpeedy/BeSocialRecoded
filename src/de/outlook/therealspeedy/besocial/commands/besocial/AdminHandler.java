@@ -76,6 +76,7 @@ public class AdminHandler {
                             Bukkit.getPluginManager().getPlugin(BeSocial.name).reloadConfig();
                             sender.sendMessage(Messages.getPrefix() + "§aMain config reloaded.");
                             BeSocial.loadLangConfig();
+                            Messages.update();
                             sender.sendMessage(Messages.getPrefix() + "§aMessages language file reloaded.");
                             BeSocial.loadHelpPage();
                             sender.sendMessage(Messages.getPrefix() + "§aHelppage file reloaded.");
