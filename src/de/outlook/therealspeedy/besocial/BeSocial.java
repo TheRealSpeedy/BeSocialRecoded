@@ -7,9 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 import de.outlook.therealspeedy.besocial.commands.*;
 import de.outlook.therealspeedy.besocial.commands.besocial.BeSocialCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -218,7 +221,9 @@ public class BeSocial extends JavaPlugin {
         }
     }
 
-    private void loadHelpPage() {
+    public static void loadHelpPage() {
+        String pluginFolder = Bukkit.getPluginManager().getPlugin(BeSocial.name).getDataFolder().getAbsolutePath();
+        Logger logger = Bukkit.getPluginManager().getPlugin(BeSocial.name).getLogger();
 
         //copy default helppage if config not present
         File helpPageFile = new File(pluginFolder, "helppage.txt");
@@ -227,19 +232,25 @@ public class BeSocial extends JavaPlugin {
                 Files.copy(BeSocial.class.getResourceAsStream("/helppage.txt"), Paths.get(pluginFolder + File.separator + "helppage.txt"), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
                 exception.printStackTrace();
-                getLogger().log(Level.SEVERE, "There was a problem saving the helppage file!");
+                logger.log(Level.SEVERE, "There was a problem saving the helppage file!");
                 return;
             }
         }
 
         helpPage = getFileContent(helpPageFile);
         if (helpPage == null) {
-            getLogger().log(Level.SEVERE, "There was a problem while loading the helppage file!");
+            logger.log(Level.SEVERE, "There was a problem while loading the helppage file!");
         }
+
+        helpPage = helpPage.replaceAll("%empty", "   ");
 
     }
 
-    private void loadLangConfig() {
+    public static void loadLangConfig() {
+        String pluginFolder = Bukkit.getPluginManager().getPlugin(BeSocial.name).getDataFolder().getAbsolutePath();
+        Path messagesPath = Paths.get(pluginFolder + File.separator + "LanguageFiles");
+        Logger logger = Bukkit.getPluginManager().getPlugin(BeSocial.name).getLogger();
+
         File defaultLangFile = new File(messagesPath + File.separator + defaultLangFileName);
         File configuredLangFile = new File(messagesPath + File.separator + configuredLangFileName);
         if (!defaultLangFile.exists()) {
@@ -248,16 +259,16 @@ public class BeSocial extends JavaPlugin {
                 Files.copy(BeSocial.class.getResourceAsStream("/" + defaultLangFileName), defaultLangFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
                 exception.printStackTrace();
-                getLogger().log(Level.SEVERE, "Couldn't save default messages language file. Is there something wrong with the folder permissions?");
+                logger.log(Level.SEVERE, "Couldn't save default messages language file. Is there something wrong with the folder permissions?");
             }
         }
         if (!configuredLangFile.exists()) {
-            getLogger().log(Level.SEVERE, "The messages language configuration file specified in BeSocial's config.yml doesn't exist. Please check your configuration.");
-            getLogger().log(Level.WARNING, "Custom messages configuration file missing, using default file: " + defaultLangFileName);
-            getLogger().log(Level.INFO, "Copying " + defaultLangFileName + " into memory...");
+            logger.log(Level.SEVERE, "The messages language configuration file specified in BeSocial's config.yml doesn't exist. Please check your configuration.");
+            logger.log(Level.WARNING, "Custom messages configuration file missing, using default file: " + defaultLangFileName);
+            logger.log(Level.INFO, "Copying " + defaultLangFileName + " into memory...");
             lang = YamlConfiguration.loadConfiguration(defaultLangFile);
         } else {
-            getLogger().log(Level.INFO, "Copying " + configuredLangFileName + " into memory...");
+            logger.log(Level.INFO, "Copying " + configuredLangFileName + " into memory...");
             lang = YamlConfiguration.loadConfiguration(configuredLangFile);
         }
     }

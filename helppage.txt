@@ -10,11 +10,11 @@
      /handshake <playername>
      /highfive <playername>
      /sharehealth <playername>
-
+%empty
      /beso ignore <playername>
      /beso unignore <playername>
      /beso info
-
+%empty
      To leave the BeSocial program,
      use the following command: /besocial leave
 &d---------------------------------------------

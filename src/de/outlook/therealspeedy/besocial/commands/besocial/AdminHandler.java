@@ -74,7 +74,11 @@ public class AdminHandler {
                     else {
                         if (args[2].equalsIgnoreCase("reload")) {
                             Bukkit.getPluginManager().getPlugin(BeSocial.name).reloadConfig();
-                            sender.sendMessage(Messages.getPrefix() + "§aConfig reloaded.");
+                            sender.sendMessage(Messages.getPrefix() + "§aMain config reloaded.");
+                            BeSocial.loadLangConfig();
+                            sender.sendMessage(Messages.getPrefix() + "§aMessages language file reloaded.");
+                            BeSocial.loadHelpPage();
+                            sender.sendMessage(Messages.getPrefix() + "§aHelppage file reloaded.");
                         }
                     }
                 }
