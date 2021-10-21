@@ -1,9 +1,6 @@
 package de.outlook.therealspeedy.besocial.commands;
 
-import de.outlook.therealspeedy.besocial.util.Cooldown;
-import de.outlook.therealspeedy.besocial.util.Database;
-import de.outlook.therealspeedy.besocial.util.Messages;
-import de.outlook.therealspeedy.besocial.util.Players;
+import de.outlook.therealspeedy.besocial.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -115,6 +112,7 @@ public class ShareHealth implements CommandExecutor {
                             sender.sendMessage(Messages.getPrefix() + Messages.getSharehealthMessage("messages.sender.success.sharehealth", (Player) sender, target, sending));
                             target.sendMessage(Messages.getPrefix() + Messages.getSharehealthMessage("messages.target.success.sharehealth", (Player) sender, target, sending));
                             Players.spawnParticles((Player) sender, target, cmd);
+                            GlobalHandler.announceInteraction((Player) sender, target, cmd, sending);
 
                             Database.logAction((Player) sender, "sendHealth");
                             Database.logAction(target, "receiveHealth");

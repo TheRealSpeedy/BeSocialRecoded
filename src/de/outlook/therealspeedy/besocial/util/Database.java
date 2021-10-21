@@ -65,19 +65,14 @@ public class Database {
             String newDataBaseArray = makeDatabaseString(newArray);
             database.set(path, newDataBaseArray);
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
     public static String[] getIgnored(Player player) {
         String playerID = player.getUniqueId().toString();
         String path = playerID + ".ignoring";
-        if (database.contains(path)) {
-            return database.getString(path).split("&");
-        } else {
-            return new String[0];
-        }
+
+        return (database.contains(path)) ? database.getString(path).split("&") : new String[0];
     }
 
     public static void logAction(Player player, String action){
@@ -117,11 +112,8 @@ public class Database {
         }
 
         String path = playerID + "." + key;
-        if (database.contains(path)){
-            return database.getInt(path);
-        } else {
-            return 0;
-        }
+
+        return (database.contains(path)) ? database.getInt(path) : 0;
 
     }
 

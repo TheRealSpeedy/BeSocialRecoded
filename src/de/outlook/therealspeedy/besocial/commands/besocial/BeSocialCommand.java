@@ -91,8 +91,7 @@ public class BeSocialCommand implements CommandExecutor {
 	
 	
 	private boolean isHelp(String[] args) {
-		if (args.length == 0) return true;
-		else return args[0].equalsIgnoreCase("help");
+		return args.length == 0 || args[0].equalsIgnoreCase("help");
 	}
 
 }

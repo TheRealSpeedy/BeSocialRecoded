@@ -1,14 +1,15 @@
+TODO:
 tune admin command
 make admin help menu customizable
-add per-interaction opt-out
+add per-interaction opt-out with player whitelist
 better documentation / plugin page
-optional global chat
+optional global chat announcements
 add config failover
 add PlaceholderAPI support
 make verbosity configurable
 
 
-done:
+DONE:
 add particle effects
 add cooldown
 add rejoin command

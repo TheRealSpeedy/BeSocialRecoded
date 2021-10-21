@@ -56,6 +56,17 @@ messages:
       highfive: '&5%sender &dgave you a high five!'
       handshake: '&5%sender &dgives you a handshake.'
       sharehealth: '&dYou received &5%healthsend &dhealth from &5%target&d!'
+  global:
+    hug: '&7%sender &8hugged &7%target!'
+    cuddle: '&7%sender &8cuddled &7%target!'
+    kiss: '&7%sender &8kissed &7%target!'
+    lick: '&7%sender &8licked &7%target!'
+    poke: '&7%sender &8poked &7%target!'
+    pet: '&7%sender &8petted &7%target!'
+    slap: '&7%sender &8slapped &7%target!'
+    highfive: '&7%sender &8gave &7%target a high five!'
+    handshake: '&7%sender &8gives &7%target a handshake.'
+    sharehealth: '&7%target received &8%healthsend health &7from &8%sender&d!'
   special:
     leaveBeSocial: '&cIt''s a pity you leave the BeSocial program. We will miss you.'
     leaveBeSocial2: '&cIf you want to join the program again, please ask an admin.'

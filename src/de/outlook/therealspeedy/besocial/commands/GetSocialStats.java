@@ -1,6 +1,5 @@
 package de.outlook.therealspeedy.besocial.commands;
 
-import de.outlook.therealspeedy.besocial.BeSocial;
 import de.outlook.therealspeedy.besocial.util.Database;
 import de.outlook.therealspeedy.besocial.util.Messages;
 import org.bukkit.command.Command;
@@ -16,27 +15,20 @@ public class GetSocialStats implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        //TODO: remove check after beta testing
-        if (!BeSocial.unstableModeIsActive()) {
-            sender.sendMessage(Messages.getPrefix() + Messages.getInfoMessage("messages.sender.error.unstableFeatureNotAvailable"));
-            return true;
-        }
-
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Messages.getPrefix() + "Aborted. Running this command from console could damage the database.");
+            sender.sendMessage(Messages.getPrefix() + "§cAborted. Running this command from console could damage the database.");
             return false;
         }
 
-        sender.sendMessage(Messages.getPrefix() + "Your statistics:");
+        sender.sendMessage(Messages.getPrefix() + "§2§oYour statistics:");
         for (int i = 0; i < sources.length; i++) {
             if (i % 2 == 0) {
-                sender.sendMessage(sourceActions[i] + " send: " + Database.getStatistic(((Player) sender), sources[i]) + " times");
+                sender.sendMessage("§b§o" + sourceActions[i] + " §r§9send: §b§o" + Database.getStatistic(((Player) sender), sources[i]) + " §r§9times");
             } else {
-                sender.sendMessage(sourceActions[i] + " received: " + Database.getStatistic(((Player) sender), sources[i]) + " times");
+                sender.sendMessage("§b§o" + sourceActions[i] + " §r§9received: §b§o" + Database.getStatistic(((Player) sender), sources[i]) + " §r§9times");
             }
         }
 
-        //TODO
         return false;
     }
 

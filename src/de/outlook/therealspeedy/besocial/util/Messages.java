@@ -21,7 +21,7 @@ public class Messages extends JavaPlugin {
 		String prefix = langConfig.getString("messages.prefix");
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-		prefix = prefix + " ";
+		prefix = prefix + " §r";
 		
 		return prefix;
 	}
@@ -98,15 +98,15 @@ public class Messages extends JavaPlugin {
 
 		while (cooldownSecondsLeft >= 86400) {
 			days++;
-			cooldownSecondsLeft = cooldownSecondsLeft - 86400;
+			cooldownSecondsLeft -= 86400;
 		}
 		while (cooldownSecondsLeft >= 3600){
 			hours++;
-			cooldownSecondsLeft = cooldownSecondsLeft - 3600;
+			cooldownSecondsLeft -= 3600;
 		}
 		while (cooldownSecondsLeft >= 60){
 			minutes++;
-			cooldownSecondsLeft = cooldownSecondsLeft - 60;
+			cooldownSecondsLeft -= 60;
 		}
 		seconds = cooldownSecondsLeft;
 

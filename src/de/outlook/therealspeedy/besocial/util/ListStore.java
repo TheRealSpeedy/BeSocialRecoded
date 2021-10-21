@@ -1,5 +1,8 @@
 package de.outlook.therealspeedy.besocial.util;
 
+import de.outlook.therealspeedy.besocial.BeSocial;
+import org.bukkit.Bukkit;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -9,11 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ListStore {
 	
 	private final File storageFile;
 	private final ArrayList<String> values;
+	private final Logger logger = Bukkit.getPluginManager().getPlugin(BeSocial.name).getLogger();
 	
 	public ListStore(File file) {
 		this.storageFile  = file;
@@ -24,7 +30,7 @@ public class ListStore {
 				this.storageFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("[BeSocial] [ERROR] Cant write to disk.");
+				logger.log(Level.SEVERE, "Can't write to disk.");
 			}
 		}
 	}
@@ -66,7 +72,7 @@ public class ListStore {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("[BeSocial] [ERROR] Cant write to disk.");
+			logger.log(Level.SEVERE, "Can't write to disk.");
 		}
 	}
 	

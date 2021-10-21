@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 
 import de.outlook.therealspeedy.besocial.commands.*;
 import de.outlook.therealspeedy.besocial.commands.besocial.BeSocialCommand;
@@ -24,11 +23,11 @@ import static de.outlook.therealspeedy.besocial.util.Basic.getFileContent;
 
 public class BeSocial extends JavaPlugin {
 
+    //oh god I have to clean up here
     private final FileConfiguration config = this.getConfig();
     private int initnbr = 0;
     public static ListStore notMembers;
     private final String pluginFolder = this.getDataFolder().getAbsolutePath();
-    public final Path messagesPath = Paths.get(pluginFolder + File.separator + "LanguageFiles");
     private static final String defaultLangFileName = "english.lang.yml";
     private static String configuredLangFileName;
     public static YamlConfiguration lang = new YamlConfiguration();
@@ -37,7 +36,7 @@ public class BeSocial extends JavaPlugin {
     public static final double currentConfigVersion = 16.0;
     public static final String name = "BeSocial";
     private static boolean unstableModeActive;
-    public static final int sumUnstableFeatures = 1;
+    public static final int sumUnstableFeatures = 0;
     public static String helpPage = null;
 
 
@@ -48,6 +47,9 @@ public class BeSocial extends JavaPlugin {
 
         if (config.getBoolean("enableUnstableFeatures")) {
             unstableModeActive = true;
+            if (sumUnstableFeatures == 0) {
+                getLogger().log(Level.INFO, "Unstable features are enabled in the config, but there are no unstable features in this BeSocial version.");
+            }
             getLogger().log(Level.WARNING, "You've enabled unstable features in the config. Please report bugs here: https://www.spigotmc.org/threads/333423/");
             getLogger().log(Level.WARNING, "Don't use unstable feature mode on live servers. This is only for testing.");
             getLogger().log(Level.WARNING, "Make backups of BeSocial's database before using unstable features.");
@@ -154,55 +156,56 @@ public class BeSocial extends JavaPlugin {
 
 
     private void initCommands() {
-        //enable statistics checker by default
-        this.getCommand("getsocialstats").setExecutor(new GetSocialStats());
-        initnbr++;
-        //check if command is enabled in config, then enable by setting executor
-        if (config.getBoolean("enableCommand.beso")) {
-            this.getCommand("besocial").setExecutor(new BeSocialCommand());
+            //enable statistics command by default
+            this.getCommand("getsocialstats").setExecutor(new GetSocialStats());
             initnbr++;
-            this.getCommand("besocial").setTabCompleter(new BeSocialTabCompleter());
-        }
-        if (config.getBoolean("enableCommand.hug")) {
-            this.getCommand("hug").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.cuddle")) {
-            this.getCommand("cuddle").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.poke")) {
-            this.getCommand("poke").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.kiss")) {
-            this.getCommand("kiss").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.slap")) {
-            this.getCommand("slap").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.lick")) {
-            this.getCommand("lick").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.pet")) {
-            this.getCommand("pet").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.highfive")) {
-            this.getCommand("highfive").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.handshake")) {
-            this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
-            initnbr++;
-        }
-        if (config.getBoolean("enableCommand.sharehealth")) {
-            this.getCommand("sharehealth").setExecutor(new ShareHealth());
-            initnbr++;
-        }
+
+            //check if command is enabled in config, then enable by setting executor
+            if (config.getBoolean("enableCommand.beso")) {
+                this.getCommand("besocial").setExecutor(new BeSocialCommand());
+                initnbr++;
+                this.getCommand("besocial").setTabCompleter(new BeSocialTabCompleter());
+            }
+            if (config.getBoolean("enableCommand.hug")) {
+                this.getCommand("hug").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.cuddle")) {
+                this.getCommand("cuddle").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.poke")) {
+                this.getCommand("poke").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.kiss")) {
+                this.getCommand("kiss").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.slap")) {
+                this.getCommand("slap").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.lick")) {
+                this.getCommand("lick").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.pet")) {
+                this.getCommand("pet").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.highfive")) {
+                this.getCommand("highfive").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.handshake")) {
+                this.getCommand("handshake").setExecutor(new SimpleSocialCommand());
+                initnbr++;
+            }
+            if (config.getBoolean("enableCommand.sharehealth")) {
+                this.getCommand("sharehealth").setExecutor(new ShareHealth());
+                initnbr++;
+            }
     }
 
     private void initDatabase() {
@@ -330,6 +333,8 @@ public class BeSocial extends JavaPlugin {
         config.addDefault("particles.usedParticle.pet", "happyVillager");
         config.addDefault("particles.usedParticle.sharehealth", "hearts");
         config.addDefault("messages.file", defaultLangFileName);
+        config.addDefault("messages.announceInteractionGlobally", false);
+        config.addDefault("messages.logGlobalAnnouncementsToConsole", false);
         /* legacy messages default values
         config.addDefault("messages.prefix", "&7&o[&r&d&oBeSocial&r&7&o]");
         config.addDefault("messages.sender.error.senderNotMember", "&cI'm sorry, but you can't do that. You're not a member of the BeSocial program.");
